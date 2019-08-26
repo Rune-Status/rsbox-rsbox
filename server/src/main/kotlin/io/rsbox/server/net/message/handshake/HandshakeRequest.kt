@@ -1,6 +1,6 @@
 package io.rsbox.server.net.message.handshake
 
-import io.rsbox.net.Message
+import io.rsbox.server.net.Message
 
 /**
  * @author Kyle Escobar

@@ -1,11 +1,10 @@
 package io.rsbox.server.net
 
 import io.netty.channel.Channel
-import io.rsbox.net.ConnectionManager
-import io.rsbox.net.session.Session
 import io.rsbox.server.Server
 import io.rsbox.server.net.pipeline.GameChannelInitializer
 import io.rsbox.server.net.session.GameSession
+import io.rsbox.server.net.session.Session
 import io.rsbox.server.net.session.SessionRegistry
 import mu.KLogging
 import java.net.InetSocketAddress

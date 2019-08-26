@@ -1,6 +1,7 @@
-package io.rsbox.net
+package io.rsbox.server.net
 
-import io.rsbox.net.session.Session
+import io.rsbox.server.net.session.Session
+
 
 /**
  * @author Kyle Escobar

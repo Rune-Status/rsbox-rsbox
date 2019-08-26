@@ -2,9 +2,8 @@ package io.rsbox.server.net.session
 
 import io.netty.channel.Channel
 import io.netty.channel.ChannelFuture
-import io.rsbox.net.Message
-import io.rsbox.net.MessageHandler
-import io.rsbox.net.session.Session
+import io.rsbox.server.net.Message
+import io.rsbox.server.net.MessageHandler
 import io.rsbox.server.net.pipeline.CodecChannelHandler
 import io.rsbox.server.net.protocol.ProtocolProvider
 import io.rsbox.server.net.protocol.RSProtocol

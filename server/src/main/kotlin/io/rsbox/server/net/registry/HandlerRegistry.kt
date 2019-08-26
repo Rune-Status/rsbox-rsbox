@@ -1,7 +1,7 @@
-package io.rsbox.net.registry
+package io.rsbox.server.net.registry
 
-import io.rsbox.net.Message
-import io.rsbox.net.MessageHandler
+import io.rsbox.server.net.Message
+import io.rsbox.server.net.MessageHandler
 
 /**
  * @author Kyle Escobar

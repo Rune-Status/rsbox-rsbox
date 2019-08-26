@@ -1,7 +1,7 @@
 package io.rsbox.server.net.codec.handshake
 
 import io.netty.buffer.ByteBuf
-import io.rsbox.net.Codec
+import io.rsbox.server.net.Codec
 import io.rsbox.server.net.message.handshake.HandshakeResponse
 
 /**

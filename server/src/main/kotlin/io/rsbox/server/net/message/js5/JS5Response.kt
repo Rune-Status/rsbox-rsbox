@@ -1,6 +1,6 @@
 package io.rsbox.server.net.message.js5
 
-import io.rsbox.net.Message
+import io.rsbox.server.net.Message
 
 /**
  * @author Kyle Escobar

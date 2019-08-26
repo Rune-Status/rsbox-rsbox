@@ -1,12 +1,11 @@
 package io.rsbox.server.net.protocol
 
 import io.netty.buffer.ByteBuf
-import io.rsbox.net.Codec
-import io.rsbox.net.Message
-import io.rsbox.net.MessageHandler
-import io.rsbox.net.protocol.Protocol
-import io.rsbox.net.registry.CodecRegistry
-import io.rsbox.net.registry.HandlerRegistry
+import io.rsbox.server.net.Codec
+import io.rsbox.server.net.Message
+import io.rsbox.server.net.MessageHandler
+import io.rsbox.server.net.registry.CodecRegistry
+import io.rsbox.server.net.registry.HandlerRegistry
 import io.rsbox.server.net.session.GameSession
 import mu.KLogging
 
@@ -19,7 +18,8 @@ import mu.KLogging
  *
  * @param name The protocol name for reference.
  */
-abstract class RSProtocol(override val name: String, private val highestOpcode: Int) : Protocol {
+abstract class RSProtocol(override val name: String, private val highestOpcode: Int) :
+    Protocol {
 
     private val inboundCodecs = CodecRegistry(highestOpcode + 1)
     private val outboundCodecs = CodecRegistry(highestOpcode + 1)

@@ -1,7 +1,7 @@
-package io.rsbox.net.session
+package io.rsbox.server.net.session
 
 import io.netty.channel.ChannelFuture
-import io.rsbox.net.Message
+import io.rsbox.server.net.Message
 
 /**
  * @author Kyle Escobar

@@ -1,5 +1,9 @@
 plugins {}
 
-dependencies {
-    compile project(':net')
+apply plugin: 'application'
+
+mainClassName = 'io.rsbox.server.Launcher'
+
+run {
+    workingDir = rootProject.projectDir
 }

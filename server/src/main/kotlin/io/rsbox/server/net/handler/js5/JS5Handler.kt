@@ -1,7 +1,7 @@
 package io.rsbox.server.net.handler.js5
 
 import com.google.common.primitives.Ints
-import io.rsbox.net.MessageHandler
+import io.rsbox.server.net.MessageHandler
 import io.rsbox.server.Server
 import io.rsbox.server.net.message.js5.JS5Request
 import io.rsbox.server.net.message.js5.JS5Response

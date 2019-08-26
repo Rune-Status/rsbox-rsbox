@@ -2,7 +2,7 @@ package io.rsbox.server.net.pipeline
 
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
-import io.rsbox.net.Message
+import io.rsbox.server.net.Message
 import io.rsbox.server.net.GameServer
 import io.rsbox.server.net.session.GameSession
 import java.lang.IllegalStateException

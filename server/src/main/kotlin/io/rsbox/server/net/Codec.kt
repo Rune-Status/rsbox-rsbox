@@ -1,4 +1,4 @@
-package io.rsbox.net
+package io.rsbox.server.net
 
 import io.netty.buffer.ByteBuf
 

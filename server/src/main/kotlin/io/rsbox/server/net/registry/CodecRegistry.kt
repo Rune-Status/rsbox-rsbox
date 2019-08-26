@@ -1,8 +1,8 @@
-package io.rsbox.net.registry
+package io.rsbox.server.net.registry
 
-import io.rsbox.net.Codec
-import io.rsbox.net.Message
-import io.rsbox.net.exceptions.IllegalOpcodeException
+import io.rsbox.server.net.Codec
+import io.rsbox.server.net.Message
+import io.rsbox.server.net.exceptions.IllegalOpcodeException
 import java.lang.IllegalArgumentException
 import java.util.concurrent.ConcurrentHashMap
 

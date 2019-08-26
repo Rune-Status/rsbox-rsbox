@@ -1,6 +1,6 @@
 package io.rsbox.server.net.handler.handshake
 
-import io.rsbox.net.MessageHandler
+import io.rsbox.server.net.MessageHandler
 import io.rsbox.server.Server
 import io.rsbox.server.net.ServerResponseType
 import io.rsbox.server.net.message.handshake.HandshakeRequest
