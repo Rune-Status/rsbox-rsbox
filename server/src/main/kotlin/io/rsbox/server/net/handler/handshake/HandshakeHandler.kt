@@ -17,7 +17,11 @@ class HandshakeHandler : MessageHandler<GameSession, HandshakeRequest> {
         if(Server.REVISION != message.revision) {
             session.send(HandshakeResponse(ServerResponseType.REVISION_MISMATCH))
         } else {
-            session.send(HandshakeResponse(ServerResponseType.ACCEPTABLE))
+            session.send(HandshakeResponse(ServerResponseType.ACCEPTABLE))!!.addListener { future ->
+                if(future.isSuccess) {
+                    session.protocol = session.protocolProvider.js5
+                }
+            }
         }
     }
 

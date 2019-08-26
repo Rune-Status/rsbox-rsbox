@@ -25,8 +25,6 @@ class Server {
 
     lateinit var gameServer: GameServer
 
-    lateinit var cacheStore: Store
-
     private lateinit var stopwatch: Stopwatch
 
     /**
@@ -160,5 +158,7 @@ class Server {
 
     companion object : KLogging() {
         var REVISION: Int = -1
+
+        lateinit var cacheStore: Store
     }
 }

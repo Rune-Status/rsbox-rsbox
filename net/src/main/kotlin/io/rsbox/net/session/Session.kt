@@ -1,5 +1,6 @@
 package io.rsbox.net.session
 
+import io.netty.channel.ChannelFuture
 import io.rsbox.net.Message
 
 /**
@@ -29,7 +30,7 @@ interface Session {
     /**
      * Sends a message across the network.
      */
-    fun send(message: Message)
+    fun send(message: Message): ChannelFuture?
 
     /**
      * Called when a message is received from a client across the network.

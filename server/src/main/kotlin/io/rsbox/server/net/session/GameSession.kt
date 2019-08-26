@@ -1,6 +1,7 @@
 package io.rsbox.server.net.session
 
 import io.netty.channel.Channel
+import io.netty.channel.ChannelFuture
 import io.rsbox.net.Message
 import io.rsbox.net.MessageHandler
 import io.rsbox.net.session.Session
@@ -36,9 +37,9 @@ class GameSession(val channel: Channel) : Session {
      *
      * @param message The message to be sent.
      */
-    override fun send(message: Message) {
+    override fun send(message: Message): ChannelFuture? {
         // TODO Add async messages that only send the queue per game tick for each session.
-        channel.writeAndFlush(message)
+        return channel.writeAndFlush(message)
     }
 
     /**
