@@ -1,7 +1,6 @@
 package io.rsbox.net.registry
 
 import io.rsbox.net.Codec
-import io.rsbox.net.CodecRegistration
 import io.rsbox.net.Message
 import io.rsbox.net.exceptions.IllegalOpcodeException
 import java.lang.IllegalArgumentException
@@ -18,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class CodecRegistry(private val size: Int) {
 
-    private val messages = ConcurrentHashMap<Class<out Message>, CodecRegistration>()
+    private val messages = ConcurrentHashMap<Class<out Message>, Codec.CodecRegistration>()
 
     private val opcodes = ConcurrentHashMap<Int, Codec<*>>()
 
@@ -38,7 +37,7 @@ class CodecRegistry(private val size: Int) {
             throw Exception("Codec instance could not be created.", e)
         }
         put(opcode, codecInst)
-        val reg = CodecRegistration(opcode, codecInst)
+        val reg = Codec.CodecRegistration(opcode, codecInst)
         messages[message] = reg
     }
 
@@ -73,7 +72,7 @@ class CodecRegistry(private val size: Int) {
      * @param message The message class to retrieve for.
      * @return The Codec registration object.
      */
-    fun <M : Message> find(message: Class<M>): CodecRegistration {
+    fun <M : Message> find(message: Class<M>): Codec.CodecRegistration {
         return messages[message] ?: throw IllegalArgumentException("Message ${message.simpleName} does not have a codec associated.")
     }
 }

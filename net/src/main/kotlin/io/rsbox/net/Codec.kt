@@ -27,4 +27,20 @@ interface Codec<T : Message> {
      * @return The message object as a new instance.
      */
     fun decode(buf: ByteBuf): T { throw IllegalAccessError("Unable to execute decode on outbound messages.") }
+
+    /**
+     * A registration class which defines an opcode associated with a codec.
+     *
+     * @param opcode The opcode integer.
+     * @param codec The associated codec.
+     */
+    @Suppress("UNCHECKED_CAST")
+    data class CodecRegistration(val opcode: Int, private val codec: Codec<*>) {
+
+        @Suppress("UNUSED_PARAMETER")
+        fun <M : Message> getCodec(): Codec<M> {
+            return codec as Codec<M>
+        }
+
+    }
 }
