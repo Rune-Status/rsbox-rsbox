@@ -37,4 +37,6 @@ interface Session {
      * @param message The message that is received.
      */
     fun <T : Message> messageReceived(message: T)
+
+    fun onError(cause: Throwable)
 }

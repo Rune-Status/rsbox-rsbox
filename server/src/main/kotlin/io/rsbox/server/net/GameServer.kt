@@ -4,6 +4,9 @@ import io.netty.channel.Channel
 import io.rsbox.net.ConnectionManager
 import io.rsbox.net.session.Session
 import io.rsbox.server.Server
+import io.rsbox.server.net.pipeline.GameChannelInitializer
+import io.rsbox.server.net.session.GameSession
+import io.rsbox.server.net.session.SessionRegistry
 import mu.KLogging
 import java.net.InetSocketAddress
 
@@ -18,8 +21,10 @@ import java.net.InetSocketAddress
  */
 class GameServer(override val server: Server) : SocketServer(server), ConnectionManager {
 
+    private val sessions = SessionRegistry()
+
     init {
-        bootstrap.childHandler(null)
+        bootstrap.childHandler(GameChannelInitializer(this))
     }
 
     /**
@@ -55,11 +60,14 @@ class GameServer(override val server: Server) : SocketServer(server), Connection
     }
 
     override fun newSession(channel: Channel): Session {
-        TODO("Not yet implemented.")
+        val session = GameSession(channel)
+        sessions.add(session)
+        return session
     }
 
     override fun sessionInvalidated(session: Session) {
-        TODO("Not yet implemented.")
+        session.disconnect()
+        sessions.remove(session as GameSession)
     }
 
     companion object : KLogging()

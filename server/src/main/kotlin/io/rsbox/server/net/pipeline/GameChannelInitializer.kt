@@ -29,5 +29,6 @@ class GameChannelInitializer(val gameServer: GameServer) : ChannelInitializer<So
         p.addLast("global_traffic", globalTraffic)
         p.addLast("channel_traffic", ChannelTrafficShapingHandler(0, 1024 * 512, 1000))
         p.addLast("timeout", timeout)
+        p.addLast("handler", GameChannelHandler(gameServer))
     }
 }
