@@ -1,0 +1,4 @@
+rootProject.name = 'rsbox'
+
+include ':server'
+include ':net'
