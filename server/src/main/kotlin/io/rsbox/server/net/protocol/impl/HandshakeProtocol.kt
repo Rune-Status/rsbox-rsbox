@@ -12,6 +12,11 @@ import io.rsbox.server.net.protocol.RSProtocol
  * @author Kyle Escobar
  */
 
+/**
+ * The handshake protocol tells the server what protocol the client is going to send next.
+ * 15 = JS5
+ * 14 = LOGIN
+ */
 class HandshakeProtocol : RSProtocol("HANDSHAKE", 15) {
 
     init {

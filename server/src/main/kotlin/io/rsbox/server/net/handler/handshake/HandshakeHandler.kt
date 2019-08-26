@@ -11,6 +11,11 @@ import io.rsbox.server.net.session.GameSession
  * @author Kyle Escobar
  */
 
+/**
+ * Processes the handshake inbound message.
+ * Changes the session's current protocol to the required one
+ * after successfully sending the response through the previous protocol.
+ */
 class HandshakeHandler : MessageHandler<GameSession, HandshakeRequest> {
 
     override fun handle(session: GameSession, message: HandshakeRequest) {

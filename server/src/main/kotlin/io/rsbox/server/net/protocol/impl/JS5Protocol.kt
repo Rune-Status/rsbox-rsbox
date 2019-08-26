@@ -12,6 +12,9 @@ import io.rsbox.server.net.protocol.RSProtocol
  * @author Kyle Escobar
  */
 
+/**
+ * The protocol that handles downloading the cache when the client first connects.
+ */
 class JS5Protocol : RSProtocol("JS5", 6) {
 
     init {

@@ -15,6 +15,10 @@ import net.runelite.cache.fs.jagex.DiskStorage
  * @author Kyle Escobar
  */
 
+/**
+ * Extracts data from the cache store and formats them into
+ * the JS5 response to be send over the network.
+ */
 class JS5Handler : MessageHandler<GameSession, JS5Request> {
 
     private val cacheStore = Server.cacheStore
@@ -23,6 +27,10 @@ class JS5Handler : MessageHandler<GameSession, JS5Request> {
 
         if(message.ignore) return
 
+        /**
+         * When the client requests index 255, send them the index config
+         * for that archive file.
+         */
         if(message.index == 255) {
             encodeIndexData(session, message)
         } else {
@@ -30,6 +38,12 @@ class JS5Handler : MessageHandler<GameSession, JS5Request> {
         }
     }
 
+    /**
+     * Encodes the index config file and sends a JS5Response back to the client.
+     *
+     * @param session The session sending the request.
+     * @param message The js5 request message.
+     */
     private fun encodeIndexData(session: GameSession, message: JS5Request) {
         val data: ByteArray
 
@@ -57,6 +71,12 @@ class JS5Handler : MessageHandler<GameSession, JS5Request> {
         session.send(response)
     }
 
+    /**
+     * Encodes cache file into a JS5Response to be sent over the network.
+     *
+     * @param session The session sending the request.
+     * @param message The js5 request message.
+     */
     private fun encodeFileData(session: GameSession, message: JS5Request) {
         val index = cacheStore.findIndex(message.index)!!
         val archive = index.getArchive(message.archive)!!

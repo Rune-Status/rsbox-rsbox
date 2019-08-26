@@ -82,11 +82,24 @@ abstract class RSProtocol(override val name: String, private val highestOpcode: 
 
     abstract fun readOpcode(buf: ByteBuf): Int
 
+    /**
+     * Retrieves the codec given a buffer. This methods executes readOpcode()
+     * to figure out what codec is required for that opcode.
+     *
+     * @param buf The inbound message buffer.
+     * @return The associated codec.
+     */
     fun getInboundCodec(buf: ByteBuf): Codec<*> {
         val opcode = readOpcode(buf)
         return inboundCodecs.find(opcode)
     }
 
+    /**
+     * Retrieves a codec given a message class.
+     *
+     * @param message The message class.
+     * @return The associated codec.
+     */
     fun <M : Message> getOutboundCodec(message: Class<M>): Codec<M> {
         return outboundCodecs.find(message).getCodec()
     }

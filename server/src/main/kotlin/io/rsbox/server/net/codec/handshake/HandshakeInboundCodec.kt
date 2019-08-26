@@ -8,8 +8,19 @@ import io.rsbox.server.net.message.handshake.HandshakeRequest
  * @author Kyle Escobar
  */
 
+/**
+ * The decode logic for inbound handshake requests.
+ */
 class HandshakeInboundCodec : Codec<HandshakeRequest> {
 
+    /**
+     * This is the logic that gets executed to decode a buffer into
+     * a handshake request.
+     * When the handshake request is JS5, an additional revision step is required.
+     *
+     * @param buf The inbound buffer.
+     * @return The decoded handshake request.
+     */
     override fun decode(buf: ByteBuf): HandshakeRequest {
         buf.resetReaderIndex()
 
