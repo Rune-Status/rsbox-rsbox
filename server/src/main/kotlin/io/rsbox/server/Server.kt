@@ -8,6 +8,7 @@ import com.uchuhimo.konf.source.yaml.toYaml
 import io.rsbox.server.config.Conf
 import io.rsbox.server.config.spec.ServerSpec
 import io.rsbox.server.net.GameServer
+import io.rsbox.server.system.security.rsa.RSA
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -65,6 +66,11 @@ class Server {
          * Load the server's revision from server.yml.
          */
         REVISION = Conf.SERVER[ServerSpec.revision]
+
+        /**
+         * Load / generate the RSA key pairs.
+         */
+        RSA.load()
     }
 
     /**

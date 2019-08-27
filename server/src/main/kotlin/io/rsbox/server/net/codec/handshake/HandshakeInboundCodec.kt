@@ -27,6 +27,7 @@ class HandshakeInboundCodec : Codec<HandshakeRequest> {
         val opcode = buf.readUnsignedByte().toInt()
         return when(opcode) {
             15 -> decodeJS5Handshake(buf)
+            14 -> HandshakeRequest(14, -1)
             else -> HandshakeRequest(-1)
         }
     }
