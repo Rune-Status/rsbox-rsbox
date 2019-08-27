@@ -1,4 +1,4 @@
-package io.rsbox.net.exceptions
+package io.rsbox.server.net.exceptions
 
 import java.lang.RuntimeException
 

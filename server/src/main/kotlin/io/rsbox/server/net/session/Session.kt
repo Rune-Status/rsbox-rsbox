@@ -1,6 +1,7 @@
-package io.rsbox.net.session
+package io.rsbox.server.net.session
 
-import io.rsbox.net.Message
+import io.netty.channel.ChannelFuture
+import io.rsbox.server.net.Message
 
 /**
  * @author Kyle Escobar
@@ -29,7 +30,7 @@ interface Session {
     /**
      * Sends a message across the network.
      */
-    fun send(message: Message)
+    fun send(message: Message): ChannelFuture?
 
     /**
      * Called when a message is received from a client across the network.
@@ -37,4 +38,6 @@ interface Session {
      * @param message The message that is received.
      */
     fun <T : Message> messageReceived(message: T)
+
+    fun onError(cause: Throwable)
 }
