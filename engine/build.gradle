@@ -1,0 +1,7 @@
+plugins {}
+
+description = "RSBox Game Logic"
+
+dependencies {
+    implementation project(':config')
+}

@@ -1,9 +1,38 @@
 plugins {}
 
+description = "The main server module of RSBox."
+
 apply plugin: 'application'
 
 mainClassName = 'io.rsbox.server.Launcher'
 
+dependencies {
+    compile project(':config')
+    compile project(':engine')
+    compile project(':net')
+}
+
 run {
     workingDir = rootProject.projectDir
+    group = "rsbox"
+}
+
+sourceSets {
+    main.kotlin.srcDirs = ['src/main/kotlin']
+    main.resources.srcDirs = ['src/main/resources']
+}
+
+tasks.register("install") {
+    description = "Install RSBox"
+    
+    group = "rsbox"
+    
+    doFirst {
+        javaexec {
+            workingDir = rootProject.projectDir
+            classpath = sourceSets.main.runtimeClasspath
+            main = "io.rsbox.server.Launcher"
+            args = ["--install"]
+        }
+    }
 }
