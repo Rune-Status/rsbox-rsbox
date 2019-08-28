@@ -79,7 +79,8 @@ class CodecRegistry {
 
     fun <M : Message> find(messageClass: Class<M>): Codec.CodecRegistration {
         try {
-            return messages[messageClass] ?: throw NullPointerException()
+            if(!messages.containsKey(messageClass)) throw NullPointerException()
+            return messages[messageClass]!!
         } catch(e : Exception) {
             throw IllegalOpcodeException("Message class ${messageClass.simpleName} is not bound!")
         }
