@@ -30,7 +30,7 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
     }
 
     fun onDisconnect() {
-
+        invalidate()
     }
 
     fun onError(cause: Throwable) {
@@ -43,7 +43,7 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
     }
 
     fun invalidate() {
-
+        server.invalidateSession(this)
     }
 
     fun changeProtocol(newProtocol: RSProtocol) {

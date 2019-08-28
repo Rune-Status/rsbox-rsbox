@@ -71,6 +71,10 @@ class NetworkServer(val engine: Engine) {
         return session
     }
 
+    fun invalidateSession(session: Session) {
+        sessions.remove(session)
+    }
+
     companion object : KLogging() {
         val PROTOCOLS: ProtocolProvider = ProtocolProvider()
     }
