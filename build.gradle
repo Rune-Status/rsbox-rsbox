@@ -4,6 +4,7 @@ plugins {
 
 allprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'jacoco'
     
     group 'rsbox'
     version '0.1'
@@ -38,5 +39,12 @@ allprojects {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+    
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            html.enabled false
+        }
     }
 }
