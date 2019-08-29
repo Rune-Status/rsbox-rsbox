@@ -1,8 +1,8 @@
-[![Build Status](https://img.shields.io/travis/rsbox/rsbox)](https://travis-ci.org/rsbox/rsbox)
-![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/rsbox/rsbox?label=latest)
-[![RSBox License](https://img.shields.io/github/license/rsbox/rsbox)](https://github.com/rsbox/rsbox/blob/master/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/rsbox/rsbox)](https://github.com/rsbox/rsbox/graphs/contributors)
+[![Java 8+](https://img.shields.io/badge/Java-8+-4c7e9f.svg)](http://java.oracle.com)
+[![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 [![Join Discord](https://img.shields.io/discord/595582070596698116?color=738ADB&label=Discord)](https://discord.gg/XYYuKn2)
+[![Build Status](https://travis-ci.org/rsbox/rsbox.svg?branch=master)](https://travis-ci.org/rsbox/rsbox)
+[![RSBox License](https://img.shields.io/github/license/rsbox/rsbox)](https://github.com/rsbox/rsbox/blob/master/LICENSE)
 
 
 
