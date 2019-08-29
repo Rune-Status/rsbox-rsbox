@@ -22,6 +22,8 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
 
     val protocol: RSProtocol get() = currentProtocol
 
+    var reconnecting: Boolean = false
+
     fun onReady() {
         val p = ctx.pipeline()
         p.addBefore("handler","codec_handler", NormalCodecHandler(this))

@@ -23,7 +23,8 @@ allprojects {
         compile 'com.github.uchuhimo:konf:master-SNAPSHOT'
         compile 'io.netty:netty-all:4.1.39.Final'
         compile 'com.github.runelite.runelite:cache:runelite-parent-1.5.31.1'
-        compile 'org.bouncycastle:bcprov-jdk16:1.45'
+        compile 'org.bouncycastle:bcprov-ext-jdk16:1.46'
+
     }
 
     compileKotlin {

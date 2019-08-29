@@ -22,6 +22,8 @@ class Engine {
         logger.info("Server engine running revision [{}].", REVISION)
 
         this.loadCache()
+
+        RSA.load()
     }
 
     fun stop() {
@@ -42,5 +44,6 @@ class Engine {
     companion object : KLogging() {
         var REVISION: Int = -1
         lateinit var CACHE: Store
+        var RSA = io.rsbox.engine.system.rsa.RSA()
     }
 }

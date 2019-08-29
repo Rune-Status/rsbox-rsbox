@@ -4,6 +4,7 @@ import com.uchuhimo.konf.Config
 import com.uchuhimo.konf.source.yaml.toYaml
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
+import io.rsbox.engine.system.rsa.RSA
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -13,6 +14,8 @@ import java.io.File
  */
 
 object Install : KLogging() {
+
+    val rsa = RSA()
 
     private val dirs = arrayOf(
         "rsbox/",
@@ -33,6 +36,8 @@ object Install : KLogging() {
             this.setupDirs()
 
             this.setupConfigs()
+
+            rsa.generate()
 
             logger.info { "Installation complete! Make sure that you upload your cache to rsbox/data/cache/ and xteas.json to rsbox/data/xteas/." }
             logger.info { "In order to connect, first you need to add the contents of rsbox/data/rsa/modulus.txt into your client. Refer to the Wiki for more instructions." }

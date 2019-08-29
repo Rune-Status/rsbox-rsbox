@@ -4,6 +4,7 @@ import io.rsbox.engine.Engine
 import io.rsbox.net.LoginState
 import io.rsbox.net.MessageHandler
 import io.rsbox.net.NetworkServer
+import io.rsbox.net.impl.login.LoginType
 import io.rsbox.net.session.Session
 import mu.KLogging
 
@@ -15,8 +16,10 @@ class HandshakeHandler : MessageHandler<Session, HandshakeRequest> {
 
     override fun handle(session: Session, message: HandshakeRequest) {
         val handshake = HandshakeType.values().firstOrNull { it.opcode == message.type }
+        println("handle ${message.type}")
         when(handshake) {
             HandshakeType.JS5 -> handleJS5Handshake(session, message)
+            HandshakeType.LOGIN -> handleLoginHandshake(session, message)
         }
     }
 
@@ -28,6 +31,20 @@ class HandshakeHandler : MessageHandler<Session, HandshakeRequest> {
             session.writeMessage(HandshakeResponse(LoginState.ACCEPTABLE))
             session.changeProtocol(NetworkServer.PROTOCOLS.js5)
         }
+    }
+
+    private fun handleLoginHandshake(session: Session, message: HandshakeRequest) {
+        println("booom")
+        if(message.type == LoginType.RECONNECTING.opcode) {
+            session.reconnecting = true
+        }
+
+        val seed = (Math.random() * Long.MAX_VALUE).toLong()
+
+        session.writeMessage(HandshakeResponse(LoginState.ACCEPTABLE))
+        session.writeMessage(HandshakeSeedResponse(seed))
+
+        session.changeProtocol(NetworkServer.PROTOCOLS.login)
     }
 
     companion object : KLogging()
