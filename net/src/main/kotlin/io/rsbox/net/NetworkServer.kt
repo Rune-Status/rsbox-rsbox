@@ -19,7 +19,7 @@ import java.net.InetSocketAddress
  * @author Kyle Escobar
  */
 
-class NetworkServer() {
+class NetworkServer {
 
     private val sessions = SessionRegistry()
 

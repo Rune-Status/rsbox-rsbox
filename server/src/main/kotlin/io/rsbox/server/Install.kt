@@ -8,6 +8,10 @@ import io.rsbox.engine.system.rsa.RSA
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
+import java.nio.channels.Channels
+import java.util.zip.ZipFile
 
 /**
  * @author Kyle Escobar
@@ -29,19 +33,29 @@ object Install : KLogging() {
     )
 
     fun run(forceInstall: Boolean = false) {
-        if(!checkInstalled() && !forceInstall) {
+        if(!checkSetup() || forceInstall) {
 
-            logger.info { "Installing RSBox project..." }
+            println("\n" +
+                    "  _____   _____ ____   ______   __\n" +
+                    " |  __ \\ / ____|  _ \\ / __ \\ \\ / /\n" +
+                    " | |__) | (___ | |_) | |  | \\ V / \n" +
+                    " |  _  / \\___ \\|  _ <| |  | |> <  \n" +
+                    " | | \\ \\ ____) | |_) | |__| / . \\ \n" +
+                    " |_|  \\_\\_____/|____/ \\____/_/ \\_\\\n" +
+                    "                                  \n" +
+                    "                                  ")
+            println("========== SETUP WIZARD ==========")
 
             this.setupDirs()
 
             this.setupConfigs()
 
+            this.downloadCache()
+
             rsa.generate()
-
-            logger.info { "Installation complete! Make sure that you upload your cache to rsbox/data/cache/ and xteas.json to rsbox/data/xteas/." }
-            logger.info { "In order to connect, first you need to add the contents of rsbox/data/rsa/modulus.txt into your client. Refer to the Wiki for more instructions." }
-
+            println(" ")
+            println("======= RSBOX SETUP COMPLETE =======")
+            println("You may now start your server. Make sure you import the /rsbox/data/rsa/modulus.txt into your OSRS client.")
         } else {
             logger.info("This project has already been installed and is ready to start.")
             logger.info("If you want to force a re-install, use the argument --force on the [server:install] gradle task or add it after the --install argument via CLI.")
@@ -97,6 +111,49 @@ object Install : KLogging() {
     private fun setupConfigs() {
         Config { addSpec(ServerSpec) }.toYaml.toFile(PathConstants.CONFIG_SERVER_PATH)
         logger.info("Created default config file {}.", PathConstants.CONFIG_SERVER_PATH)
+    }
+
+    fun downloadCache() {
+        println("Downloading Cache...")
+        val channel = Channels.newChannel(URL(PathConstants.CACHE_REPO.replace("<>", Config{addSpec(ServerSpec)}[ServerSpec.revision].toString())).openStream())
+        val output = FileOutputStream("${PathConstants.CACHE_PATH}cache.zip")
+        val fileChannel = output.channel
+        fileChannel.transferFrom(channel, 0, Long.MAX_VALUE)
+        println("Download complete.")
+
+        this.downloadXteas()
+    }
+
+    private fun downloadXteas() {
+        println("Downloading Xteas...")
+        val channel = Channels.newChannel(URL(PathConstants.XTEAS_REPO.replace("<>", Config{addSpec(ServerSpec)}[ServerSpec.revision].toString())).openStream())
+        val output = FileOutputStream(PathConstants.XTEAS_FILE_PATH)
+        output.channel.transferFrom(channel, 0, Long.MAX_VALUE)
+        println("Download complete.")
+
+        this.extractCache()
+    }
+
+    private fun extractCache() {
+        println("Decompressing cache files...")
+        val file = File("${PathConstants.CACHE_PATH}cache.zip")
+        ZipFile(file).use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                zip.getInputStream(entry).use { input ->
+                    File("${PathConstants.CACHE_PATH}${entry.name}").outputStream().use { output ->
+                        input.copyTo(output)
+                        println("Decompressed file ${entry.name}")
+                        output.close()
+                    }
+                    input.close()
+                }
+            }
+            zip.close()
+        }
+
+        File("${PathConstants.CACHE_PATH}cache.zip").delete()
+
+        println("======= DOWNLOAD COMPLETE =======")
     }
 
 }

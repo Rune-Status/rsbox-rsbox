@@ -13,4 +13,9 @@ object PathConstants {
     const val RSA_PUBLIC_PATH = "rsbox/data/rsa/public.pem"
     const val RSA_MODULUS_PATH = "rsbox/data/rsa/modulus.txt"
 
+    /**
+     * Repos
+     */
+    const val CACHE_REPO = "https://github.com/rsbox/cache/raw/rev_<>/cache.zip"
+    const val XTEAS_REPO = "https://github.com/rsbox/cache/raw/rev_<>/xteas.json"
 }

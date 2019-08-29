@@ -91,6 +91,11 @@ class RSA {
         } catch(e : Exception) {
             logger.error("Error generating RSA key pair files.", e)
         }
+
+        println(" ")
+        println("RSA Exponent: ${exponent.toString(radix)}")
+        println("RSA Modulus: ${modulus.toString(radix)}")
+        println("Private / Public key pair have been saved in ${PathConstants.RSA_PRIVATE_PATH.replace("private.pem","")}.")
     }
 
     companion object : KLogging()
