@@ -24,7 +24,13 @@ allprojects {
         compile 'io.netty:netty-all:4.1.39.Final'
         compile 'com.github.runelite.runelite:cache:runelite-parent-1.5.31.1'
         compile 'org.bouncycastle:bcprov-ext-jdk16:1.46'
-
+        
+        test.useJUnitPlatform()
+        testCompile 'junit:junit:4.12'
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.1'
+        testRuntime('org.junit.jupiter:junit-jupiter-engine:5.5.1')
+        testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.2'
+        testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
     }
 
     compileKotlin {

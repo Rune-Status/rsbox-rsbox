@@ -17,9 +17,16 @@ run {
     group = "rsbox"
 }
 
+test {
+    group = "rsbox"
+}
+
+test.dependsOn(':net:test')
+
 sourceSets {
     main.kotlin.srcDirs = ['src/main/kotlin']
     main.resources.srcDirs = ['src/main/resources']
+    test.kotlin.srcDirs = ['src/test/kotlin']
 }
 
 tasks.register("install") {

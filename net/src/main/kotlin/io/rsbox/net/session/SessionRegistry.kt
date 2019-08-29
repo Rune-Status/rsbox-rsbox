@@ -15,4 +15,6 @@ class SessionRegistry {
     fun remove(session: Session) {
         sessions.remove(session)
     }
+
+    fun count(): Int = sessions.size
 }

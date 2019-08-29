@@ -54,7 +54,7 @@ class Server {
 
     private fun loadNetwork() {
         logger.info { "Starting networking." }
-        networkServer = NetworkServer(engine)
+        networkServer = NetworkServer()
         networkServer.start()
     }
 
