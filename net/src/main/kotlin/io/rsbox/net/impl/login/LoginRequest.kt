@@ -12,7 +12,6 @@ data class LoginRequest(
     val username: String = "",
     val password: String = "",
     val revision: Int = -1,
-    val channel: Channel? = null,
     val xteaKeys: IntArray = intArrayOf(),
     val viewportResizable: Boolean = false,
     val viewportWidth: Int = -1,
@@ -20,6 +19,7 @@ data class LoginRequest(
     val authCode: Int = -1,
     val uuid: String = "",
     val reconnecting: Boolean = false,
+    val seed: Long = -1L,
     val error: Boolean = false,
     val errorResponse: LoginState? = null
 ) : Message {
@@ -32,7 +32,6 @@ data class LoginRequest(
         if (username != other.username) return false
         if (password != other.password) return false
         if (revision != other.revision) return false
-        if (channel != other.channel) return false
         if (!xteaKeys.contentEquals(other.xteaKeys)) return false
         if (viewportResizable != other.viewportResizable) return false
         if (viewportWidth != other.viewportWidth) return false
@@ -48,7 +47,6 @@ data class LoginRequest(
         var result = username.hashCode()
         result = 31 * result + password.hashCode()
         result = 31 * result + revision
-        result = 31 * result + channel.hashCode()
         result = 31 * result + xteaKeys.contentHashCode()
         result = 31 * result + viewportResizable.hashCode()
         result = 31 * result + viewportWidth

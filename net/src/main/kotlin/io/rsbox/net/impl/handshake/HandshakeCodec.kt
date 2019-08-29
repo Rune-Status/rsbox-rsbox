@@ -20,7 +20,7 @@ class HandshakeCodec : Codec<HandshakeRequest, HandshakeResponse> {
 
         return when(opcode) {
             HandshakeType.JS5.opcode -> decodeJS5Handshake(buf, opcode)
-            HandshakeType.LOGIN.opcode -> decodeLoginHandshake(buf, opcode)
+            HandshakeType.LOGIN.opcode -> decodeLoginHandshake(opcode)
             else -> throw Exception("Unhandled handshake opcode $opcode.")
         }
     }
@@ -32,11 +32,7 @@ class HandshakeCodec : Codec<HandshakeRequest, HandshakeResponse> {
         return HandshakeRequest(opcode, revision)
     }
 
-    private fun decodeLoginHandshake(buf: ByteBuf, opcode: Int): HandshakeRequest {
-        if(!buf.isReadable) {
-            return HandshakeRequest(-1, -1)
-        }
-
+    private fun decodeLoginHandshake(opcode: Int): HandshakeRequest {
         return HandshakeRequest(opcode, -1)
     }
 }

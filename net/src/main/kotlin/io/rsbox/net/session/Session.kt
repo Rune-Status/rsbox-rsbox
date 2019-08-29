@@ -23,6 +23,7 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
     val protocol: RSProtocol get() = currentProtocol
 
     var reconnecting: Boolean = false
+    var seed: Long = -1L
 
     fun onReady() {
         val p = ctx.pipeline()
@@ -36,7 +37,7 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
     }
 
     fun onError(cause: Throwable) {
-        logger.warn("An error occurred in session with cause: {}", cause.message)
+        logger.warn("An error occurred in session with cause: {}", cause)
     }
 
     fun onMessageReceive(message: Message) {

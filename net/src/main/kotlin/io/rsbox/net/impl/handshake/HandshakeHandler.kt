@@ -16,7 +16,6 @@ class HandshakeHandler : MessageHandler<Session, HandshakeRequest> {
 
     override fun handle(session: Session, message: HandshakeRequest) {
         val handshake = HandshakeType.values().firstOrNull { it.opcode == message.type }
-        println("handle ${message.type}")
         when(handshake) {
             HandshakeType.JS5 -> handleJS5Handshake(session, message)
             HandshakeType.LOGIN -> handleLoginHandshake(session, message)
@@ -34,12 +33,12 @@ class HandshakeHandler : MessageHandler<Session, HandshakeRequest> {
     }
 
     private fun handleLoginHandshake(session: Session, message: HandshakeRequest) {
-        println("booom")
         if(message.type == LoginType.RECONNECTING.opcode) {
             session.reconnecting = true
         }
 
         val seed = (Math.random() * Long.MAX_VALUE).toLong()
+        session.seed = seed
 
         session.writeMessage(HandshakeResponse(LoginState.ACCEPTABLE))
         session.writeMessage(HandshakeSeedResponse(seed))

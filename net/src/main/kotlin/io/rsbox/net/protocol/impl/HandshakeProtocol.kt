@@ -18,7 +18,7 @@ class HandshakeProtocol : RSProtocol("HANDSHAKE") {
         inbound(14, HandshakeRequest::class.java, HandshakeCodec::class.java, HandshakeHandler::class.java)
 
         outbound(0, HandshakeResponse::class.java, HandshakeCodec::class.java)
-        outbound(-1, HandshakeSeedResponse::class.java, HandshakeSeedCodec::class.java)
+        outbound(1, HandshakeSeedResponse::class.java, HandshakeSeedCodec::class.java)
     }
 
     override fun readOpcode(buf: ByteBuf): Int {
