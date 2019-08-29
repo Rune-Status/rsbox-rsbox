@@ -13,8 +13,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew clean test
-  - ./gradlew jacocoTestReport
+  - ./gradlew clean check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
