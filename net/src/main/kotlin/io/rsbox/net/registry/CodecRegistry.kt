@@ -21,25 +21,14 @@ class CodecRegistry {
     private val opcodes = ConcurrentHashMap<Int, Codec<*, *>>()
 
     fun <M : Message, C : Codec<in M, *>> bindInbound(messageClass: Class<M>, codecClass: Class<C>, opcode: Int) {
-        val codec: C
-        try {
-            val con: Constructor<C> = codecClass.getConstructor()
-            codec = con.newInstance()
-        } catch(e : Exception) {
-            throw IllegalArgumentException("Codec could not be created!", e)
-        }
-
-        if(opcodes.containsKey(opcode)) {
-            throw IllegalStateException("Failure to bind opcode $opcode as it already is bound.")
-        }
-
-        put(opcode, codec)
-
-        val reg = Codec.CodecRegistration(opcode, codec)
-        messages[messageClass] = reg
+        bind(messageClass, codecClass, opcode)
     }
 
     fun <M : Message, C : Codec<*, in M>> bindOutbound(messageClass: Class<M>, codecClass: Class<C>, opcode: Int) {
+        bind(messageClass, codecClass, opcode)
+    }
+
+    private fun <M : Message, C : Codec<*, *>> bind(messageClass: Class<M>, codecClass: Class<C>, opcode: Int) {
         val codec: C
         try {
             val con: Constructor<C> = codecClass.getConstructor()
