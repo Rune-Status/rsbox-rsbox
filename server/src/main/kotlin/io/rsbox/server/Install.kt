@@ -5,12 +5,14 @@ import com.uchuhimo.konf.source.yaml.toYaml
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.system.rsa.RSA
+import io.rsbox.util.Hex
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 import java.nio.channels.Channels
+import java.security.SecureRandom
 import java.util.zip.ZipFile
 
 /**
@@ -53,6 +55,9 @@ object Install : KLogging() {
             this.downloadCache()
 
             rsa.generate()
+
+            this.generateEncryptionKey()
+
             println(" ")
             println("======= RSBOX SETUP COMPLETE =======")
             println("You may now start your server. Make sure you import the /rsbox/data/rsa/modulus.txt into your OSRS client.")
@@ -154,6 +159,20 @@ object Install : KLogging() {
         File("${PathConstants.CACHE_PATH}cache.zip").delete()
 
         println("======= DOWNLOAD COMPLETE =======")
+    }
+
+    private fun generateEncryptionKey() {
+        val config = Config { addSpec(ServerSpec) }.from.yaml.file(PathConstants.CONFIG_SERVER_PATH)
+
+        val key = ByteArray(16)
+        SecureRandom.getInstanceStrong().nextBytes(key)
+
+        val keyString = Hex.toHexString(key)
+
+        config[ServerSpec.encryption_key] = keyString
+        config.toYaml.toFile(PathConstants.CONFIG_SERVER_PATH)
+
+        logger.info("Generated new random encryption key in server.yml.")
     }
 
 }

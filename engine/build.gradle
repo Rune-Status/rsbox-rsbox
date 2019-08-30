@@ -6,4 +6,5 @@ dependencies {
     implementation project(':config')
     implementation project(':net')
     implementation project(':engine:login')
+    implementation project(':util')
 }

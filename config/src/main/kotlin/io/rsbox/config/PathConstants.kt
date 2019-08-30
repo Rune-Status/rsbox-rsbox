@@ -12,6 +12,7 @@ object PathConstants {
     const val RSA_PRIVATE_PATH = "rsbox/data/rsa/private.pem"
     const val RSA_PUBLIC_PATH = "rsbox/data/rsa/public.pem"
     const val RSA_MODULUS_PATH = "rsbox/data/rsa/modulus.txt"
+    const val PLAYER_SAVES_PATH = "rsbox/data/saves/"
 
     /**
      * Repos
