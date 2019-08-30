@@ -54,8 +54,19 @@ class Server {
 
     private fun loadNetwork() {
         logger.info { "Starting networking." }
+
+        /**
+         * Pass engine information to the network server.
+         */
+        NetworkServer.cacheStore = Engine.CACHE
+        NetworkServer.revision = Engine.REVISION
+        NetworkServer.exponent = Engine.RSA.exponent
+        NetworkServer.modulus = Engine.RSA.modulus
+
         networkServer = NetworkServer()
         networkServer.start()
+
+        Engine.networkServer = networkServer
     }
 
     companion object : KLogging()

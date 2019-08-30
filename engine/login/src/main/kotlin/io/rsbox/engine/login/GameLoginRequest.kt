@@ -1,32 +1,27 @@
-package io.rsbox.net.impl.login
-
-import io.rsbox.net.LoginState
-import io.rsbox.net.Message
+package io.rsbox.engine.login
 
 /**
  * @author Kyle Escobar
  */
 
-data class LoginRequest(
-    val username: String = "",
-    val password: String = "",
-    val revision: Int = -1,
-    val xteaKeys: IntArray = intArrayOf(),
-    val viewportResizable: Boolean = false,
-    val viewportWidth: Int = -1,
-    val viewportHeight: Int = -1,
-    val authCode: Int = -1,
-    val uuid: String = "",
-    val reconnecting: Boolean = false,
-    val seed: Long = -1L,
-    val error: Boolean = false,
-    val errorResponse: LoginState? = null
-) : Message {
+data class GameLoginRequest(
+    val username: String,
+    val password: String,
+    val revision: Int,
+    val xteaKeys: IntArray,
+    val viewportResizable: Boolean,
+    val viewportWidth: Int,
+    val viewportHeight: Int,
+    val authCode: Int,
+    val uuid: String,
+    val reconnecting: Boolean,
+    val seed: Long
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as LoginRequest
+        other as GameLoginRequest
 
         if (username != other.username) return false
         if (password != other.password) return false

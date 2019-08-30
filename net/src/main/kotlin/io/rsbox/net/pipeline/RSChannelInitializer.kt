@@ -25,7 +25,7 @@ class RSChannelInitializer(private val server: NetworkServer) : ChannelInitializ
         val p = ch.pipeline()
 
         p.addLast("global_traffic", globalTrafficShaper)
-        p.addLast("channel_traffic", ChannelTrafficShapingHandler(0, 1024 * 512, 1000))
+        p.addLast("channel_traffic", ChannelTrafficShapingHandler(0, 0, 1000))
         p.addLast("timeout", IdleStateHandler(0, 60, 0))
         p.addLast("handler", RSChannelHandler(server))
     }

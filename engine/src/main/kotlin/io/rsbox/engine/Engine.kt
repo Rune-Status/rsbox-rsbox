@@ -4,6 +4,8 @@ import com.google.common.base.Stopwatch
 import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
+import io.rsbox.engine.service.ServiceManager
+import io.rsbox.net.NetworkServer
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -14,7 +16,6 @@ import java.util.concurrent.TimeUnit
  */
 
 class Engine {
-
     fun start() {
         // Load server revision via server.yml
         REVISION = Conf.SERVER[ServerSpec.revision]
@@ -24,6 +25,9 @@ class Engine {
         this.loadCache()
 
         RSA.load()
+
+        logger.info("Loading engine services.")
+        ServiceManager.init()
     }
 
     fun stop() {
@@ -42,6 +46,7 @@ class Engine {
     }
 
     companion object : KLogging() {
+        lateinit var networkServer: NetworkServer
         var REVISION: Int = -1
         lateinit var CACHE: Store
         var RSA = io.rsbox.engine.system.rsa.RSA()

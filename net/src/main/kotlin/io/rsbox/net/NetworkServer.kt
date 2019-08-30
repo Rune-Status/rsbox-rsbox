@@ -7,12 +7,14 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
-import io.rsbox.engine.Engine
+import io.rsbox.engine.login.GameLoginRequest
 import io.rsbox.net.pipeline.RSChannelInitializer
 import io.rsbox.net.protocol.ProtocolProvider
 import io.rsbox.net.session.Session
 import io.rsbox.net.session.SessionRegistry
 import mu.KLogging
+import net.runelite.cache.fs.Store
+import java.math.BigInteger
 import java.net.InetSocketAddress
 
 /**
@@ -27,6 +29,10 @@ class NetworkServer {
     private val workerGroup = NioEventLoopGroup(1)
 
     private val bootstrap = ServerBootstrap()
+
+    init {
+        PROTOCOLS = ProtocolProvider()
+    }
 
     fun start() {
         bootstrap
@@ -75,7 +81,20 @@ class NetworkServer {
         sessions.remove(session)
     }
 
+    fun getLoginRequestSession(request: GameLoginRequest): Session? {
+        sessions.sessions.forEach { s ->
+            if(s.key.lastLoginRequest != null) {
+                if(s.key.lastLoginRequest!!.seed == request.seed) return s.key
+            }
+        }
+        return null
+    }
+
     companion object : KLogging() {
-        val PROTOCOLS: ProtocolProvider = ProtocolProvider()
+        lateinit var PROTOCOLS: ProtocolProvider
+        var revision: Int = -1
+        lateinit var cacheStore: Store
+        lateinit var exponent: BigInteger
+        lateinit var modulus: BigInteger
     }
 }

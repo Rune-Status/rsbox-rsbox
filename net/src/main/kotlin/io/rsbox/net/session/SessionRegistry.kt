@@ -6,7 +6,7 @@ package io.rsbox.net.session
 
 class SessionRegistry {
 
-    private val sessions = hashMapOf<Session, Boolean>()
+    val sessions = hashMapOf<Session, Boolean>()
 
     fun add(session: Session) {
         sessions[session] = true

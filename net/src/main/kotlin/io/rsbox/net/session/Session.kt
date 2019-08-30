@@ -1,7 +1,7 @@
 package io.rsbox.net.session
 
-import io.netty.channel.ChannelFuture
 import io.netty.channel.ChannelHandlerContext
+import io.rsbox.engine.login.GameLoginRequest
 import io.rsbox.net.AsyncMessage
 import io.rsbox.net.Message
 import io.rsbox.net.NetworkServer
@@ -24,6 +24,7 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
 
     var reconnecting: Boolean = false
     var seed: Long = -1L
+    var lastLoginRequest: GameLoginRequest? = null
 
     fun onReady() {
         val p = ctx.pipeline()
@@ -37,7 +38,9 @@ open class Session(val server: NetworkServer, val ctx: ChannelHandlerContext) {
     }
 
     fun onError(cause: Throwable) {
-        logger.warn("An error occurred in session with cause: {}", cause)
+        if(cause.stackTrace[0].methodName != "read0") {
+            logger.warn("Session threw an exception: {}", cause)
+        }
     }
 
     fun onMessageReceive(message: Message) {

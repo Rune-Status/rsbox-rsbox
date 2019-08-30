@@ -2,9 +2,9 @@ package io.rsbox.net.impl.login
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import io.rsbox.engine.Engine
 import io.rsbox.net.Codec
 import io.rsbox.net.LoginState
+import io.rsbox.net.NetworkServer
 import mu.KLogging
 import java.math.BigInteger
 import io.rsbox.util.BufferUtils.readString
@@ -41,7 +41,7 @@ class LoginCodec : Codec<LoginRequest, LoginResponse> {
             val revision = buf.readInt()
             buf.skipBytes(Int.SIZE_BYTES)
             buf.skipBytes(Byte.SIZE_BYTES)
-            if(revision == Engine.REVISION) {
+            if(revision == NetworkServer.revision) {
                 payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
                 return decodeLoginRequest(buf, payloadLength, opcode, revision)
             }
@@ -59,7 +59,7 @@ class LoginCodec : Codec<LoginRequest, LoginResponse> {
             val secureBuf: ByteBuf = run {
                 val length = buf.readUnsignedShort()
                 val secureBuf = buf.readBytes(length)
-                val rsa = BigInteger(secureBuf.toByteArraySafe()).modPow(Engine.RSA.exponent, Engine.RSA.modulus)
+                val rsa = BigInteger(secureBuf.toByteArraySafe()).modPow(NetworkServer.exponent, NetworkServer.modulus)
                 Unpooled.wrappedBuffer(rsa.toByteArray())
             }
 
@@ -139,7 +139,7 @@ class LoginCodec : Codec<LoginRequest, LoginResponse> {
 
             xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
 
-            val cacheCrcs = Engine.CACHE.indexes.map { it.crc }.toIntArray()
+            val cacheCrcs = NetworkServer.cacheStore.indexes.map { it.crc }.toIntArray()
             val crcs = IntArray(cacheCrcs.size) { xteaBuf.readInt() }
 
             for(i in 0 until crcs.size) {

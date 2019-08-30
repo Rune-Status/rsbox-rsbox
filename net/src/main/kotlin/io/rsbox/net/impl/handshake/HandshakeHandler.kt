@@ -1,6 +1,5 @@
 package io.rsbox.net.impl.handshake
 
-import io.rsbox.engine.Engine
 import io.rsbox.net.LoginState
 import io.rsbox.net.MessageHandler
 import io.rsbox.net.NetworkServer
@@ -23,7 +22,7 @@ class HandshakeHandler : MessageHandler<Session, HandshakeRequest> {
     }
 
     private fun handleJS5Handshake(session: Session, message: HandshakeRequest) {
-        if(message.revision != Engine.REVISION) {
+        if(message.revision != NetworkServer.revision) {
             logger.info("Session {} rejected due to client revision mismatch.",session.ctx.channel())
             session.writeMessage(HandshakeResponse(LoginState.REVISION_MISMATCH))
         } else {

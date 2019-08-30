@@ -16,4 +16,7 @@ object ServerSpec : ConfigSpec("server") {
     val network_port by optional(43594, "network.port")
     val network_threads by optional(2, "network.threads")
 
+    // Game Related
+    val game_login_threads by optional(3, "game.login_threads")
+
 }

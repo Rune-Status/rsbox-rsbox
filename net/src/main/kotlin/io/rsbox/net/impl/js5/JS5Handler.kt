@@ -1,8 +1,8 @@
 package io.rsbox.net.impl.js5
 
 import com.google.common.primitives.Ints
-import io.rsbox.engine.Engine
 import io.rsbox.net.MessageHandler
+import io.rsbox.net.NetworkServer
 import io.rsbox.net.session.Session
 import mu.KLogging
 import net.runelite.cache.fs.Container
@@ -15,7 +15,7 @@ import net.runelite.cache.fs.jagex.DiskStorage
 
 class JS5Handler : MessageHandler<Session, JS5Request> {
 
-    val cacheStore = Engine.CACHE
+    private val cacheStore = NetworkServer.cacheStore
 
     override fun handle(session: Session, message: JS5Request) {
         if(message.archive == -1 && message.index == -1) {

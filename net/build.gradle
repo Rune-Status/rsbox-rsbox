@@ -4,6 +4,6 @@ description = "RSBox Networking"
 
 dependencies {
     implementation project(':config')
-    implementation project(':engine')
     implementation project(':util')
+    implementation project(':engine:login')
 }
