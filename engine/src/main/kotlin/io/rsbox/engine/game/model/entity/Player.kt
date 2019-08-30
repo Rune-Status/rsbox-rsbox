@@ -11,11 +11,13 @@ class Player : LivingEntity() {
 
     lateinit var session: Session
 
-    var username: String = ""
-    var passwordHash: String = ""
-    var uuid: String = ""
-    var displayName: String = ""
+    lateinit var username: String
+    lateinit var passwordHash: String
+    lateinit var uuid: String
+    lateinit var displayName: String
+
     var privilege: Int = 0
+
     var banned: Boolean = false
 
     private lateinit var encodeRandom: IsaacRandom
@@ -31,6 +33,6 @@ class Player : LivingEntity() {
         this.decodeRandom = decodeRandom
 
         this.register()
-        println("Login works")
+        println("fskjlfdaklfjd")
     }
 }
