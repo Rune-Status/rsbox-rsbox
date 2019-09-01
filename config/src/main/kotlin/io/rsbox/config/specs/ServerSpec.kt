@@ -9,7 +9,7 @@ import com.uchuhimo.konf.ConfigSpec
 object ServerSpec : ConfigSpec("server") {
 
     val name by optional("RSBox Server", "name")
-    val revision by optional(181, "revision")
+    val revision by optional(182, "revision")
     val encryption_key by optional("YOUR-ENCRYPTION-KEY-HERE", "encryption_key")
 
     // Network Related

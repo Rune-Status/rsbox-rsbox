@@ -2,8 +2,6 @@ rootProject.name = 'rsbox'
 
 include ':server'
 include ':engine'
-include ':engine:login'
-include ':net'
 include ':game'
 include ':plugin'
 include ':api'

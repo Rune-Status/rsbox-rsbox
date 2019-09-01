@@ -1,6 +1,4 @@
 package io.rsbox.engine.service
-
-import io.rsbox.engine.service.impl.login.LoginService
 import mu.KLogging
 import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
@@ -17,7 +15,6 @@ object ServiceManager : KLogging() {
         /**
          * Load all service instances
          */
-        load(LoginService::class.java)
     }
 
     private fun <T : Service> load(serviceClass: Class<T>) {

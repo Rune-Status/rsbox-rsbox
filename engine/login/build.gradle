@@ -1,4 +1,0 @@
-plugins {}
-
-group 'rsbox.engine'
-version '0.1'
