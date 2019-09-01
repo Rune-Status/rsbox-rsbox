@@ -1,6 +1,8 @@
 package io.rsbox.engine.net.pregame.login
 
 import io.rsbox.engine.net.Session
+import io.rsbox.engine.service.ServiceManager
+import io.rsbox.engine.service.login.LoginService
 
 /**
  * @author Kyle Escobar
@@ -8,8 +10,9 @@ import io.rsbox.engine.net.Session
 
 class LoginHandler {
 
+    @Suppress("UNUSED_PARAMETER")
     fun handle(session: Session, message: LoginRequest) {
-        println("BOOOOM username=${message.username}, password=${message.password}")
+        ServiceManager[LoginService::class.java]!!.queueLoginRequest(message)
     }
 
 }

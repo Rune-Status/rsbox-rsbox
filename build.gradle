@@ -25,7 +25,7 @@ allprojects {
         compile 'io.netty:netty-all:4.1.39.Final'
         compile 'com.github.runelite.runelite:cache:runelite-parent-1.5.31.1'
         compile 'org.bouncycastle:bcprov-ext-jdk16:1.46'
-        compile 'org.apache.commons:commons-math3:3.6.1'
+        compile 'net.openhft:zero-allocation-hashing:0.9'
         
         test.useJUnitPlatform()
         testCompile 'junit:junit:4.12'

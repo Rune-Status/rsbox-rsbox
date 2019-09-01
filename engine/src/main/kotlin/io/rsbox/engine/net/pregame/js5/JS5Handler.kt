@@ -14,11 +14,12 @@ import net.runelite.cache.fs.jagex.DiskStorage
 
 class JS5Handler {
 
-    private lateinit var cacheStore: Store
+    private var cacheStore: Store? = null
 
     fun handle(session: Session, msg: JS5Request) {
-
-        cacheStore = session.networkServer.engine.cacheStore
+        if(cacheStore == null) {
+            cacheStore = session.networkServer.engine.cacheStore
+        }
 
         if(msg.index == 255) {
             encodeIndexData(session, msg)
@@ -32,9 +33,9 @@ class JS5Handler {
 
         if(msg.archive == 255) {
             if(cacheIndexes == null) {
-                val buf = session.ctx.alloc().heapBuffer(cacheStore.indexes.size * 8)
+                val buf = session.ctx.alloc().heapBuffer(cacheStore!!.indexes.size * 8)
 
-                cacheStore.indexes.forEach { index ->
+                cacheStore!!.indexes.forEach { index ->
                     buf.writeInt(index.crc)
                     buf.writeInt(index.revision)
                 }
@@ -47,7 +48,7 @@ class JS5Handler {
 
             data = cacheIndexes!!
         } else {
-            val storage = cacheStore.storage as DiskStorage
+            val storage = cacheStore!!.storage as DiskStorage
             data = storage.readIndex(msg.archive)
         }
 
@@ -61,9 +62,9 @@ class JS5Handler {
     }
 
     private fun encodeFileData(session: Session, msg: JS5Request) {
-        val index = cacheStore.findIndex(msg.index)!!
+        val index = cacheStore!!.findIndex(msg.index)!!
         val archive = index.getArchive(msg.archive)!!
-        var data = cacheStore.storage.loadArchive(archive)
+        var data = cacheStore!!.storage.loadArchive(archive)
 
         if(data != null) {
             val compression = data[0]

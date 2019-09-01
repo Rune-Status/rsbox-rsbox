@@ -1,4 +1,7 @@
 package io.rsbox.engine.service
+import io.rsbox.engine.game.model.World
+import io.rsbox.engine.service.game.GameService
+import io.rsbox.engine.service.login.LoginService
 import mu.KLogging
 import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
@@ -9,64 +12,46 @@ import java.util.concurrent.ConcurrentHashMap
 
 object ServiceManager : KLogging() {
 
-    private val services = ConcurrentHashMap<Service, Boolean>()
+    private val services = hashMapOf<Class<out Service>, Service>()
 
-    fun init() {
-        /**
-         * Load all service instances
-         */
+    /**
+     * Load all service instances
+     */
+    fun init(world: World) {
+        load(GameService::class.java, GameService(world))
+        load(LoginService::class.java, LoginService())
     }
 
-    private fun <T : Service> load(serviceClass: Class<T>) {
-        val service: T
-        try {
-
-            val con = serviceClass.getConstructor()
-            service = con.newInstance()
-            service.start()
-
-            services[service] = true
-
-            logger.info("Started service {}.", serviceClass.simpleName)
-        } catch(e : Exception) {
-            logger.error("Failed to load service {}.", serviceClass.simpleName)
+    private fun <T : Service> load(serviceClass: Class<out T>, service: T) {
+        if(services.containsKey(serviceClass)) {
+            logger.error("Unable to load service {} as it has already been started.", serviceClass.simpleName)
+            return
         }
+
+        service.start()
+        services[serviceClass] = service
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T : Service> find(service: Class<T>): T? {
+    private fun <T : Service> find(service: Class<out T>): T? {
         services.forEach { s ->
-            if(s::class.java == service) {
-                return s as T
+            if(s.key == service) {
+                return s.value as T
             }
         }
         return null
     }
 
     fun isRunning(service: Class<out Service>): Boolean {
-        val s = find(service)
-        return if(s != null) {
-            services[s]!!
-        } else {
-            false
-        }
-    }
-
-    fun start(service: Class<out Service>): Boolean {
-        val s = find(service) ?: return false
-        if(services[s]!!) return false
-        s.start()
-        services[s] = true
-        return true
+        return services.containsKey(service)
     }
 
     fun stop(service: Class<out Service>): Boolean {
         val s = find(service) ?: return false
-        if(!services[s]!!) return false
         s.stop()
-        services[s] = false
+        services.remove(service)
         return true
     }
 
-    operator fun <T : Service> get(service: Class<T>): T? = find(service)
+    operator fun <T : Service> get(service: Class<out T>): T? = find(service)
 }

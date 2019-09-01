@@ -1,6 +1,7 @@
 package io.rsbox.engine.net.pregame.js5
 
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageCodec
 import mu.KLogging
@@ -12,7 +13,7 @@ import mu.KLogging
 class JS5Codec : MessageToMessageCodec<ByteBuf, JS5Response>() {
 
     override fun encode(ctx: ChannelHandlerContext, msg: JS5Response, out: MutableList<Any>) {
-        val buf = ctx.alloc().buffer()
+        val buf = Unpooled.buffer()
         buf.writeByte(msg.index)
         buf.writeShort(msg.archive)
 
@@ -38,9 +39,7 @@ class JS5Codec : MessageToMessageCodec<ByteBuf, JS5Response>() {
             }
 
             JS5RequestType.ARCHIVE_NORMAL, JS5RequestType.ARCHIVE_PRIORITY -> {
-                if(msg.readableBytes() < 3) {
-                    msg.resetReaderIndex()
-                } else {
+                if(msg.readableBytes() >= 3) {
                     val index = msg.readUnsignedByte().toInt()
                     val archive = msg.readUnsignedShort()
 
@@ -50,13 +49,13 @@ class JS5Codec : MessageToMessageCodec<ByteBuf, JS5Response>() {
                         priority = opcode == JS5RequestType.ARCHIVE_PRIORITY.opcode
                     )
                     out.add(request)
+                } else {
+                    msg.resetReaderIndex()
                 }
             }
 
             else -> {
                 logger.warn("Unhandled JS5 opcode $opcode.")
-                msg.readBytes(msg.readableBytes())
-                return
             }
         }
     }

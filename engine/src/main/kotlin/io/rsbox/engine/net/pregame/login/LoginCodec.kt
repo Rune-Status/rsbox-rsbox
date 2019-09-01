@@ -19,8 +19,18 @@ import io.rsbox.util.Xtea
 
 class LoginCodec(private val session: Session) : MessageToMessageCodec<ByteBuf, LoginResponse>() {
 
-    override fun encode(ctx: ChannelHandlerContext?, msg: LoginResponse?, out: MutableList<Any>?) {
+    override fun encode(ctx: ChannelHandlerContext, msg: LoginResponse, out: MutableList<Any>) {
+        val buf = ctx.alloc().buffer()
+        buf.writeByte(2)
+        buf.writeByte(13)
+        buf.writeByte(0)
+        buf.writeInt(0)
+        buf.writeByte(msg.privilege)
+        buf.writeBoolean(true)
+        buf.writeShort(msg.index)
+        buf.writeBoolean(true)
 
+        out.add(buf)
     }
 
     override fun decode(ctx: ChannelHandlerContext, msg: ByteBuf, out: MutableList<Any>) {

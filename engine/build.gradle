@@ -3,6 +3,7 @@ plugins {}
 description = "RSBox Game Logic"
 
 dependencies {
+    implementation project(':api')
     implementation project(':config')
     implementation project(':util')
 }

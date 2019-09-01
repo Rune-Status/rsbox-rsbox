@@ -1,9 +1,11 @@
 package io.rsbox.engine
 
 import com.google.common.base.Stopwatch
+import io.rsbox.api.RSBox
 import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
+import io.rsbox.engine.game.model.World
 import io.rsbox.engine.net.NetworkServer
 import io.rsbox.engine.service.ServiceManager
 import io.rsbox.engine.system.rsa.RSA
@@ -16,14 +18,16 @@ import java.util.concurrent.TimeUnit
  * @author Kyle Escobar
  */
 
-class Engine {
+class Engine : io.rsbox.api.Engine {
 
-    var revision = -1
+    override var revision = -1
     var rsa: RSA = RSA()
-    lateinit var cacheStore: Store
+    override lateinit var cacheStore: Store
     lateinit var networkServer: NetworkServer
 
-    fun start() {
+    lateinit var world: World
+
+    override fun start() {
         // Load server revision via server.yml
         revision = Conf.SERVER[ServerSpec.revision]
 
@@ -33,14 +37,22 @@ class Engine {
 
         rsa.load()
 
+        logger.info("Loading game world.")
+        world = World(this)
+        world.init()
+
         logger.info("Loading engine services.")
-        ServiceManager.init()
+        ServiceManager.init(world)
+
+        // Update API hooks
+        RSBox.engine = this
+        RSBox.world = world
 
         networkServer = NetworkServer(this)
         networkServer.start()
     }
 
-    fun stop() {
+    override fun stop() {
         networkServer.shutdown()
     }
 
