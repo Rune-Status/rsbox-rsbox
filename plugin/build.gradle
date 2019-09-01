@@ -1,3 +1,20 @@
 plugins {}
 
 description = "RSBox Kotlin Plugins"
+
+gradle.projectsEvaluated {
+    configure(subprojects.findAll { it.buildFile.exists() }) { pluginModule -> 
+        sourceSets {
+            main.kotlin.srcDirs = ['src/main/kotlin']
+            test.kotlin.srcDirs = ['src/test/kotlin']
+        }
+        
+        test {
+            useJUnitPlatform()
+        }
+        
+        dependencies {
+            implementation project(':api')
+        }
+    }
+}

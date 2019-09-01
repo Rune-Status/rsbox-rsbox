@@ -26,6 +26,7 @@ allprojects {
         compile 'com.github.runelite.runelite:cache:runelite-parent-1.5.31.1'
         compile 'org.bouncycastle:bcprov-ext-jdk16:1.46'
         compile 'net.openhft:zero-allocation-hashing:0.9'
+        compile 'org.reflections:reflections:0.9.10'
         
         test.useJUnitPlatform()
         testCompile 'junit:junit:4.12'

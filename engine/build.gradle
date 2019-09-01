@@ -6,4 +6,13 @@ dependencies {
     implementation project(':api')
     implementation project(':config')
     implementation project(':util')
+    
+    project(':plugin').subprojects { pluginModule -> 
+        if(pluginModule.buildFile.exists()) {
+            runtimeClasspath pluginModule
+            
+            implementation pluginModule
+        }
+    }
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
 }

@@ -7,6 +7,7 @@ import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.net.NetworkServer
+import io.rsbox.engine.plugin.PluginLoader
 import io.rsbox.engine.service.ServiceManager
 import io.rsbox.engine.system.rsa.RSA
 import mu.KLogging
@@ -47,6 +48,9 @@ class Engine : io.rsbox.api.Engine {
         // Update API hooks
         RSBox.engine = this
         RSBox.world = world
+
+        // Load plugins
+        PluginLoader.init()
 
         networkServer = NetworkServer(this)
         networkServer.start()
