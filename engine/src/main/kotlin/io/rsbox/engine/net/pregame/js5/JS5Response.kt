@@ -1,12 +1,10 @@
 package io.rsbox.engine.net.pregame.js5
 
-import io.rsbox.engine.net.Message
-
 /**
  * @author Kyle Escobar
  */
 
-data class JS5Response(val index: Int, val archive: Int, val data: ByteArray) : Message {
+data class JS5Response(val index: Int, val archive: Int, val data: ByteArray) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

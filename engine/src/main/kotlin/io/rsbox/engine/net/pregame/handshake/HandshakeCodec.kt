@@ -48,7 +48,7 @@ class HandshakeCodec(private val session: Session) : MessageToMessageCodec<ByteB
         if(buf.readableBytes() < 4) return
         val revision = buf.readInt()
         if(revision != session.networkServer.engine.revision) {
-            logger.info("Login request for sessionid ${session.sessionId} rejected due to client revision mismatch.")
+            logger.info("JS5 handshake for sessionid ${session.sessionId} rejected due to client revision mismatch.")
             ctx.writeAndFlush(LoginState.REVISION_MISMATCH).addListener(ChannelFutureListener.CLOSE)
         } else {
             ctx.channel().writeAndFlush(LoginState.ACCEPTABLE).addListener { future ->

@@ -25,7 +25,7 @@ class LoginCodec(private val session: Session) : MessageToMessageCodec<ByteBuf, 
 
     override fun decode(ctx: ChannelHandlerContext, msg: ByteBuf, out: MutableList<Any>) {
 
-        var length = -1
+        val length: Int
         var reconnecting = false
 
         if(!msg.isReadable) {
