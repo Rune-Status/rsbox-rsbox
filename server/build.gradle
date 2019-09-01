@@ -9,7 +9,6 @@ mainClassName = 'io.rsbox.server.Launcher'
 dependencies {
     compile project(':config')
     compile project(':engine')
-    compile project(':net')
     compile project(':util')
 }
 

@@ -6,7 +6,6 @@ import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.Engine
-import io.rsbox.net.NetworkServer
 import mu.KLogging
 
 /**
@@ -15,9 +14,7 @@ import mu.KLogging
 
 class Server {
 
-    lateinit var engine: Engine
-
-    lateinit var networkServer: NetworkServer
+    private lateinit var engine: Engine
 
     fun start() {
         logger.info { "Server is starting up..." }
@@ -34,8 +31,6 @@ class Server {
 
         this.loadEngine()
 
-        this.loadNetwork()
-
         logger.info { "Server startup has completed." }
     }
 
@@ -50,23 +45,6 @@ class Server {
         logger.info { "Starting game engine." }
         engine = Engine()
         engine.start()
-    }
-
-    private fun loadNetwork() {
-        logger.info { "Starting networking." }
-
-        /**
-         * Pass engine information to the network server.
-         */
-        NetworkServer.cacheStore = Engine.CACHE
-        NetworkServer.revision = Engine.REVISION
-        NetworkServer.exponent = Engine.RSA.exponent
-        NetworkServer.modulus = Engine.RSA.modulus
-
-        networkServer = NetworkServer()
-        networkServer.start()
-
-        Engine.networkServer = networkServer
     }
 
     companion object : KLogging()
