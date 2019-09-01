@@ -2,7 +2,7 @@ package io.rsbox.engine.game.model.entity
 
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
-import io.rsbox.engine.net.Message
+import io.rsbox.engine.net.game.Packet
 import io.rsbox.engine.net.Session
 
 /**
@@ -59,8 +59,11 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
         for(i in 1 until 2048) {
             if(i == index) continue
             gpiExternalIndexes[gpiExternalCount++] = i
-            // TODO Tile hash updates
+            gpiTileHashMultipliers[i] =  if(i < world.players.capacity) world.players[i]?.tile?.asTileHashMultiplier ?: 0 else 0
         }
+
+        val tiles = IntArray(gpiTileHashMultipliers.size)
+        System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
         // TODO Send rebuild region packet.
 
@@ -82,7 +85,7 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
     /**
      * Network related functions
      */
-    fun write(message: Message) {
+    fun write(message: Packet) {
         session.write(message)
     }
 

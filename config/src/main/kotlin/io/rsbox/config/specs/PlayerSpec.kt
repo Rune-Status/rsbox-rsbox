@@ -13,4 +13,8 @@ object PlayerSpec : ConfigSpec("player") {
     val privilege by optional(0, "privilege")
     val uuid by required<String>("uuid")
     val banned by optional(false, "banned")
+
+    val x by optional(3221, "location.x")
+    val z by optional(3218, "location.z")
+    val height by optional(0, "location.height")
 }

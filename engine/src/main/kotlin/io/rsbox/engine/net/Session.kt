@@ -3,6 +3,8 @@ package io.rsbox.engine.net
 import io.netty.channel.ChannelHandlerContext
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
+import io.rsbox.engine.net.game.Packet
+import io.rsbox.engine.net.game.RSProtocol
 import io.rsbox.engine.net.pregame.handshake.HandshakeCodec
 import io.rsbox.engine.net.pregame.js5.JS5Handler
 import io.rsbox.engine.net.pregame.js5.JS5Request
@@ -10,7 +12,7 @@ import io.rsbox.engine.net.pregame.login.LoginHandler
 import io.rsbox.engine.net.pregame.login.LoginRequest
 import io.rsbox.util.IsaacRandom
 import mu.KLogging
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.ArrayBlockingQueue
 
 /**
  * @author Kyle Escobar
@@ -18,8 +20,9 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) {
 
-    private val sendQueue = ConcurrentLinkedQueue<Message>()
     private val maxPacketsPerPulse = Conf.SERVER[ServerSpec.max_packets_per_tick]
+
+    private val sendQueue = ArrayBlockingQueue<Packet>(maxPacketsPerPulse)
 
     val sessionId = (Math.random() * Long.MAX_VALUE).toLong()
     var seed: Long = -1L
@@ -29,6 +32,8 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
 
     lateinit var encodeRandom: IsaacRandom
     lateinit var decodeRandom: IsaacRandom
+
+    val protocol = RSProtocol()
 
     /**
      * Setup the initial pipelines.
@@ -54,7 +59,7 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
         }
     }
 
-    fun write(msg: Message) {
+    fun write(msg: Packet) {
         sendQueue.offer(msg)
     }
 
@@ -74,11 +79,9 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
     }
 
     private fun sendQueuedMessages() {
-        var sent = 0
-        while(sendQueue.size > 0 && sent < maxPacketsPerPulse) {
-            val msg = sendQueue.poll()
+        while(sendQueue.size > 0) {
+            val msg = sendQueue.take()
             ctx.channel().write(msg)
-            sent++
         }
     }
 
