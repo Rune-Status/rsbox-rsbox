@@ -2,6 +2,7 @@ package io.rsbox.engine.service
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.service.game.GameService
 import io.rsbox.engine.service.login.LoginService
+import io.rsbox.engine.service.xtea.XteaKeyService
 import mu.KLogging
 import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
@@ -20,6 +21,7 @@ object ServiceManager : KLogging() {
     fun init(world: World) {
         load(GameService::class.java, GameService(world))
         load(LoginService::class.java, LoginService())
+        load(XteaKeyService::class.java, XteaKeyService(world.engine))
     }
 
     private fun <T : Service> load(serviceClass: Class<out T>, service: T) {

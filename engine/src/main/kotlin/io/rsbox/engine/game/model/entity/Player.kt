@@ -4,6 +4,7 @@ import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.net.game.Packet
 import io.rsbox.engine.net.Session
+import io.rsbox.engine.net.game.packet.outbound.RegionLoadLoginPacket
 
 /**
  * @author Kyle Escobar
@@ -65,7 +66,7 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
         val tiles = IntArray(gpiTileHashMultipliers.size)
         System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
-        // TODO Send rebuild region packet.
+        write(RegionLoadLoginPacket(index, tile, tiles, world.engine.xteaKeyService))
 
         initiated = true
     }

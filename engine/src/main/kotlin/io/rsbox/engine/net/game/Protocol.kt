@@ -8,18 +8,18 @@ import java.lang.Exception
 
 open class Protocol {
 
-    private val inboundMessages = PacketRegistry()
-    private val outboundMessages = PacketRegistry()
+    private val inboundPackets = PacketRegistry()
+    private val outboundPackets = PacketRegistry()
 
-    fun inbound(opcode: Int, message: Class<out Packet>) {
-        inboundMessages.bind(opcode, message)
+    fun inbound(opcode: Int, packet: Class<out Packet>) {
+        inboundPackets.bind(opcode, packet)
     }
 
-    fun outbound(opcode: Int, message: Class<out Packet>) {
-        outboundMessages.bind(opcode, message)
+    fun outbound(opcode: Int, packet: Class<out Packet>) {
+        outboundPackets.bind(opcode, packet)
     }
 
     fun getInboundMessage(opcode: Int): Packet {
-        return inboundMessages.getMessage(opcode) ?: throw Exception("Unable to find inbound opcode $opcode.")
+        return inboundPackets.getMessage(opcode) ?: throw Exception("Unable to find inbound opcode $opcode.")
     }
 }

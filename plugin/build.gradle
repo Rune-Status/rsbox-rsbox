@@ -6,15 +6,12 @@ gradle.projectsEvaluated {
     configure(subprojects.findAll { it.buildFile.exists() }) { pluginModule -> 
         sourceSets {
             main.kotlin.srcDirs = ['src/main/kotlin']
-            test.kotlin.srcDirs = ['src/test/kotlin']
         }
-        
-        test {
-            useJUnitPlatform()
-        }
-        
-        dependencies {
-            implementation project(':api')
+
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
         }
     }
 }

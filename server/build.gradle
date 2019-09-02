@@ -11,6 +11,12 @@ dependencies {
     compile project(':config')
     compile project(':engine')
     compile project(':util')
+
+    project(':plugin').subprojects { pluginModule ->
+        if(pluginModule.buildFile.exists()) {
+            runtimeClasspath pluginModule
+        }
+    }
 }
 
 run {

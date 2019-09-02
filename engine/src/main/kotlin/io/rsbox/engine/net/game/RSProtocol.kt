@@ -1,5 +1,6 @@
 package io.rsbox.engine.net.game
 
+import io.rsbox.engine.net.game.packet.outbound.RegionLoadLoginPacket
 import mu.KLogging
 
 /**
@@ -16,6 +17,7 @@ class RSProtocol: Protocol() {
         /**
          * Outbound Packets
          */
+        outbound(0, RegionLoadLoginPacket::class.java)
     }
 
     companion object : KLogging()
