@@ -1,10 +1,10 @@
-package io.rsbox.engine.net.game.model
+package io.rsbox.engine.net.game.packet
 
 import com.google.common.base.MoreObjects
 import io.netty.buffer.ByteBuf
 
 /**
- * Represents a single model used in the in-game protocol.
+ * Represents a single packet used in the in-game protocol.
  *
  * @author Graham
  */

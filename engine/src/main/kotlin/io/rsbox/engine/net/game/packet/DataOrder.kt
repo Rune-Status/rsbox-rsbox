@@ -1,4 +1,4 @@
-package io.rsbox.engine.net.game.model
+package io.rsbox.engine.net.game.packet
 
 /**
  * Represents the order of bytes in a [DataType] when [DataType.getBytes] `> 1`.

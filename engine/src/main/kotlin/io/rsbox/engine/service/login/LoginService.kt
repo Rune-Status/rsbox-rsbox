@@ -1,7 +1,6 @@
 package io.rsbox.engine.service.login
 
 import io.rsbox.engine.game.model.entity.Player
-import io.rsbox.engine.net.game.RSPacketCodec
 import io.rsbox.engine.net.pregame.login.LoginRequest
 import io.rsbox.engine.net.pregame.login.LoginResponse
 import io.rsbox.engine.service.Service
@@ -30,12 +29,13 @@ class LoginService : Service {
     }
 
     fun handleLoginSuccess(player: Player) {
+        player.register()
+
         val response = LoginResponse(index = player.index, privilege = player.privilege)
         player.session.ctx.writeAndFlush(response)
 
         val p = player.session.ctx.pipeline()
         p.remove("login_codec")
-        p.addBefore("handler", "packet_codec", RSPacketCodec(player.session))
 
         player.login()
     }

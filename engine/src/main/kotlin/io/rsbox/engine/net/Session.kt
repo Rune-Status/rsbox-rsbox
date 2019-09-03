@@ -3,8 +3,6 @@ package io.rsbox.engine.net
 import io.netty.channel.ChannelHandlerContext
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
-import io.rsbox.engine.net.game.Packet
-import io.rsbox.engine.net.game.RSProtocol
 import io.rsbox.engine.net.pregame.handshake.HandshakeCodec
 import io.rsbox.engine.net.pregame.js5.JS5Handler
 import io.rsbox.engine.net.pregame.js5.JS5Request
@@ -22,8 +20,6 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
 
     private val maxPacketsPerPulse = Conf.SERVER[ServerSpec.max_packets_per_tick]
 
-    private val sendQueue = ArrayBlockingQueue<Packet>(maxPacketsPerPulse)
-
     val sessionId = (Math.random() * Long.MAX_VALUE).toLong()
     var seed: Long = -1L
 
@@ -32,8 +28,6 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
 
     lateinit var encodeRandom: IsaacRandom
     lateinit var decodeRandom: IsaacRandom
-
-    val protocol = RSProtocol()
 
     /**
      * Setup the initial pipelines.
@@ -55,12 +49,8 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
 
     fun onError(cause: Throwable) {
         if(cause.stackTrace[0].methodName != "read0") {
-            logger.error("An error occurred in session[{}]: {}", sessionId, cause.printStackTrace())
+            logger.error("An error occurred in session[{}]: {}", sessionId, cause)
         }
-    }
-
-    fun write(msg: Packet) {
-        sendQueue.offer(msg)
     }
 
     fun flush() {
@@ -74,15 +64,7 @@ class Session(val ctx: ChannelHandlerContext, val networkServer: NetworkServer) 
     }
 
     fun pulse() {
-        sendQueuedMessages()
         flush()
-    }
-
-    private fun sendQueuedMessages() {
-        while(sendQueue.size > 0) {
-            val msg = sendQueue.take()
-            ctx.channel().write(msg)
-        }
     }
 
     companion object : KLogging()

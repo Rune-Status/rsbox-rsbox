@@ -1,4 +1,4 @@
-package io.rsbox.engine.net.game.model
+package io.rsbox.engine.net.game.packet
 
 /**
  * An enumeration which holds the mode a [GamePacketBuilder] or [GamePacketReader] can be in.

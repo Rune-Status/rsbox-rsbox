@@ -1,4 +1,4 @@
-package io.rsbox.engine.net.game.model
+package io.rsbox.engine.net.game.packet
 
 import com.google.common.base.Preconditions
 import io.netty.buffer.ByteBuf
@@ -56,10 +56,10 @@ class GamePacketBuilder {
     }
 
     /**
-     * Creates the [GamePacketBuilder] for the specified model type and opcode.
+     * Creates the [GamePacketBuilder] for the specified packet type and opcode.
      *
      * @param opcode The opcode.
-     * @param type The model type.
+     * @param type The packet type.
      */
     @JvmOverloads
     constructor(opcode: Int, type: PacketType = PacketType.FIXED) {
@@ -279,7 +279,7 @@ class GamePacketBuilder {
     }
 
     /**
-     * Puts the bytes from the specified buffer into this model's buffer.
+     * Puts the bytes from the specified buffer into this packet's buffer.
      *
      * @param buffer The source [ByteBuf].
      */
@@ -334,7 +334,7 @@ class GamePacketBuilder {
     }
 
     /**
-     * Puts the bytes from the specified buffer into this model's buffer, in reverse.
+     * Puts the bytes from the specified buffer into this packet's buffer, in reverse.
      *
      * @param buffer The source [ByteBuf].
      */
@@ -451,12 +451,12 @@ class GamePacketBuilder {
      * Creates a [GamePacket] based on the current contents of this builder.
      *
      * @return The [GamePacket].
-     * @throws IllegalStateException If the builder is not in byte access mode, or if the model is raw.
+     * @throws IllegalStateException If the builder is not in byte access mode, or if the packet is raw.
      */
     fun toGamePacket(): GamePacket {
-        Preconditions.checkState(type != PacketType.RAW, "Raw packets cannot be converted to a game model.")
+        Preconditions.checkState(type != PacketType.RAW, "Raw packets cannot be converted to a game packet.")
 
-        Preconditions.checkState(mode === AccessMode.BYTE_ACCESS, "Must be in byte access mode to convert to a model.")
+        Preconditions.checkState(mode === AccessMode.BYTE_ACCESS, "Must be in byte access mode to convert to a packet.")
 
         return GamePacket(opcode, type, buffer)
     }

@@ -6,12 +6,8 @@ import io.rsbox.engine.net.Session
  * @author Kyle Escobar
  */
 
-class RSProtocol(val session: Session) {
+interface MessageHandler<T : Message> {
 
-    fun setup() {
-
-    }
-
-
+    fun handle(session: Session, message: T)
 
 }
