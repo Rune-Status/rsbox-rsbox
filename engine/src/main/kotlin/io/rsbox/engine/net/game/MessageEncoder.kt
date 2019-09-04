@@ -7,8 +7,8 @@ import io.rsbox.engine.net.game.packet.GamePacketBuilder
  * @author Kyle Escobar
  */
 
-abstract class MessageEncoder<T : Message> {
+interface MessageEncoder<T : Message> {
 
-    abstract fun encode(message: T, packet: GamePacketBuilder): GamePacket
+    fun encode(message: T, packet: GamePacketBuilder): GamePacket
 
 }

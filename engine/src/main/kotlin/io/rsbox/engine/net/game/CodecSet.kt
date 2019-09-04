@@ -28,7 +28,7 @@ class CodecSet(val size: Int) {
     }
 
     fun <T : Message> bindOutbound(opcode: Int, message: Class<T>, encoder: MessageEncoder<T>) {
-        if(encoders[message] != null || !messages.containsKey(message)) {
+        if(encoders[message] != null || messages.containsKey(message)) {
             throw Exception("Unable to bind ${message.simpleName} to outbound opcode $opcode as it is already bound.")
         }
 

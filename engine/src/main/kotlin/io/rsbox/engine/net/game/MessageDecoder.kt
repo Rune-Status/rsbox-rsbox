@@ -6,8 +6,8 @@ import io.rsbox.engine.net.game.packet.GamePacketReader
  * @author Kyle Escobar
  */
 
-abstract class MessageDecoder<T : Message> {
+interface MessageDecoder<T : Message> {
 
-    abstract fun decode(packet: GamePacketReader): T
+    fun decode(packet: GamePacketReader): T
 
 }

@@ -7,6 +7,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.Engine
+import io.rsbox.engine.net.game.RSProtocol
 import io.rsbox.engine.net.pipeline.ClientChannelInitializer
 import mu.KLogging
 import java.net.InetSocketAddress
@@ -24,6 +25,8 @@ class NetworkServer(val engine: Engine) {
 
     fun start() {
         logger.info("Starting engine networking.")
+
+        RSProtocol.init()
 
         bootstrap
             .group(bossGroup, workerGroup)

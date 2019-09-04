@@ -3,6 +3,8 @@ package io.rsbox.engine.game.model.entity
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.net.Session
+import io.rsbox.engine.net.game.Message
+import io.rsbox.engine.net.game.impl.message.RegionRebuildMessage
 
 /**
  * @author Kyle Escobar
@@ -62,6 +64,8 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
         val tiles = IntArray(gpiTileHashMultipliers.size)
         System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
+        write(RegionRebuildMessage(tile, engine.xteaKeyService, index, tiles))
+
         initiated = true
     }
 
@@ -81,11 +85,15 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
      * Network related functions
      */
 
+    fun write(message: Message) {
+        session.write(message)
+    }
+
     fun flush() {
         session.flush()
     }
 
-    fun disconnect() {
+    fun close() {
         session.close()
     }
 }

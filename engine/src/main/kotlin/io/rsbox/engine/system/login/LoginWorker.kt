@@ -66,6 +66,8 @@ class LoginWorker(private val loginQueue: LoginQueue) : Runnable {
             request.session.encodeRandom = encodeRandom
             request.session.decodeRandom = decodeRandom
 
+            request.session.player = p
+
             loginQueue.service.handleLoginSuccess(p)
             LoginQueue.logger.info("Login request accepted for username {}. Handing off connection to game protocol.", username)
             return
