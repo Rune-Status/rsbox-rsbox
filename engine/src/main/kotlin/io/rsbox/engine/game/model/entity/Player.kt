@@ -2,6 +2,7 @@ package io.rsbox.engine.game.model.entity
 
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
+import io.rsbox.engine.game.model.interf.InterfaceManager
 import io.rsbox.engine.net.Session
 import io.rsbox.engine.net.game.Message
 import io.rsbox.engine.net.game.impl.message.RegionRebuildMessage
@@ -45,6 +46,12 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
     val gpiTileHashMultipliers = IntArray(2048)
 
+    /**
+     * The interface manager.
+     * Handles all actions available for interface interaction for this player.
+     */
+    val interfaces = InterfaceManager(this)
+
 
     fun register() {
         world.register(this)
@@ -61,12 +68,13 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
             gpiTileHashMultipliers[i] =  if(i < world.players.capacity) world.players[i]?.tile?.asTileHashMultiplier ?: 0 else 0
         }
 
-        val tiles = IntArray(gpiTileHashMultipliers.size)
-        System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
+        val tiles = IntArray(gpiTileHashMultipliers.size) { gpiTileHashMultipliers[it] }
 
         write(RegionRebuildMessage(tile, engine.xteaKeyService, index, tiles))
 
         initiated = true
+
+        interfaces.openGameScreen(interfaces.displayMode)
     }
 
     fun prePulse() {
