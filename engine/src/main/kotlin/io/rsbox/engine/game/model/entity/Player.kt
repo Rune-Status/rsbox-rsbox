@@ -1,5 +1,7 @@
 package io.rsbox.engine.game.model.entity
 
+import io.rsbox.api.event.Event
+import io.rsbox.api.event.impl.PlayerLoadEvent
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.game.model.interf.InterfaceManager
@@ -50,7 +52,10 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
      * The interface manager.
      * Handles all actions available for interface interaction for this player.
      */
-    val interfaces = InterfaceManager(this)
+    override val interfaces = InterfaceManager(this)
+    override fun _interfaces(): io.rsbox.api.interf.InterfaceManager {
+        return interfaces
+    }
 
 
     fun register() {
@@ -74,7 +79,7 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
         initiated = true
 
-        interfaces.openGameScreen(interfaces.displayMode)
+        Event.trigger(PlayerLoadEvent(this)) {}
     }
 
     fun prePulse() {

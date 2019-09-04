@@ -1,5 +1,7 @@
 package io.rsbox.api.entity
 
+import io.rsbox.api.interf.InterfaceManager
+
 /**
  * @author Kyle Escobar
  */
@@ -20,4 +22,6 @@ interface Player : LivingEntity {
 
     var initiated: Boolean
 
+    val interfaces: InterfaceManager get() = _interfaces()
+    fun _interfaces(): InterfaceManager
 }

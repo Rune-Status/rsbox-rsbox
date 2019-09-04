@@ -4,9 +4,11 @@ import io.rsbox.engine.net.Session
 import io.rsbox.engine.net.game.exception.IllegalOpcodeException
 import io.rsbox.engine.net.game.impl.decoder.IgnoredDecoder
 import io.rsbox.engine.net.game.impl.encoder.IfOpenGameScreenEncoder
+import io.rsbox.engine.net.game.impl.encoder.IfOpenInterfaceEncoder
 import io.rsbox.engine.net.game.impl.encoder.RegionRebuildEncoder
 import io.rsbox.engine.net.game.impl.handler.IgnoredHandler
 import io.rsbox.engine.net.game.impl.message.IfOpenGameScreenMessage
+import io.rsbox.engine.net.game.impl.message.IfOpenInterfaceMessage
 import io.rsbox.engine.net.game.impl.message.IgnoredMessage
 import io.rsbox.engine.net.game.impl.message.RegionRebuildMessage
 import io.rsbox.engine.net.game.packet.*
@@ -23,6 +25,7 @@ object RSProtocol : KLogging() {
     fun init() {
         // Outbound Packets
         outbound(0, RegionRebuildMessage::class.java, RegionRebuildEncoder())
+        outbound(77, IfOpenInterfaceMessage::class.java, IfOpenInterfaceEncoder())
         outbound(84, IfOpenGameScreenMessage::class.java, IfOpenGameScreenEncoder())
 
         // Inbound Packets

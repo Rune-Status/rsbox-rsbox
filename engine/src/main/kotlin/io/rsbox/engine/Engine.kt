@@ -10,6 +10,7 @@ import io.rsbox.engine.net.NetworkServer
 import io.rsbox.engine.service.ServiceManager
 import io.rsbox.engine.service.xtea.XteaKeyService
 import io.rsbox.engine.system.rsa.RSA
+import io.rsbox.game.Game
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -30,9 +31,21 @@ class Engine : io.rsbox.api.Engine {
 
     lateinit var xteaKeyService: XteaKeyService
 
-    override fun start() {
+    private fun init() {
         // Load server revision via server.yml
         revision = Conf.SERVER[ServerSpec.revision]
+
+        world = World(this)
+
+        // Update API hooks
+        RSBox.engine = this
+        RSBox.world = world
+
+        world.preLoad()
+    }
+
+    override fun start() {
+        this.init()
 
         logger.info("Server engine running revision [{}].", revision)
 
@@ -41,18 +54,19 @@ class Engine : io.rsbox.api.Engine {
         rsa.load()
 
         logger.info("Loading game world.")
-        world = World(this)
-        world.init()
+        world.load()
 
         logger.info("Loading engine services.")
         ServiceManager.init(world)
 
-        // Update API hooks
-        RSBox.engine = this
-        RSBox.world = world
-
         networkServer = NetworkServer(this)
         networkServer.start()
+
+        this.post()
+    }
+
+    private fun post() {
+        world.postLoad()
     }
 
     override fun stop() {

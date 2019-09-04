@@ -1,4 +1,7 @@
-package io.rsbox.api.interf
+package io.rsbox.engine.game.model.interf
+
+import io.rsbox.api.interf.DisplayMode
+import io.rsbox.api.interf.InterfaceType
 
 /**
  * @author Kyle Escobar

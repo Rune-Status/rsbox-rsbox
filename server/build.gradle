@@ -11,6 +11,7 @@ dependencies {
     compile project(':config')
     compile project(':engine')
     compile project(':util')
+    compile project(':game')
 
     project(':plugin').subprojects { pluginModule ->
         if(pluginModule.buildFile.exists()) {

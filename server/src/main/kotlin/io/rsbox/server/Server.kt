@@ -6,6 +6,7 @@ import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.Engine
+import io.rsbox.game.Game
 import mu.KLogging
 
 /**
@@ -30,6 +31,8 @@ class Server {
         this.loadConfigs()
 
         this.loadEngine()
+
+        Game.onStart()
 
         logger.info { "Server startup has completed." }
     }

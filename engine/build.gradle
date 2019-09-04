@@ -6,6 +6,7 @@ dependencies {
     implementation project(':api')
     implementation project(':config')
     implementation project(':util')
+    implementation project(':game')
     
     project(':plugin').subprojects { pluginModule -> 
         if(pluginModule.buildFile.exists()) {
