@@ -10,7 +10,6 @@ import io.rsbox.engine.net.NetworkServer
 import io.rsbox.engine.service.ServiceManager
 import io.rsbox.engine.service.xtea.XteaKeyService
 import io.rsbox.engine.system.rsa.RSA
-import io.rsbox.game.Game
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File

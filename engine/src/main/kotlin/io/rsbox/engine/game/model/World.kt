@@ -1,9 +1,5 @@
 package io.rsbox.engine.game.model
 
-import io.rsbox.api.event.Event
-import io.rsbox.api.event.impl.WorldLoadEvent
-import io.rsbox.api.event.impl.WorldPostLoadEvent
-import io.rsbox.api.event.impl.WorldPreLoadEvent
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.entity.LivingEntityList
 import io.rsbox.engine.game.model.entity.Player
@@ -22,15 +18,12 @@ class World(override val engine: Engine) : io.rsbox.api.World {
     private val random: Random = SecureRandom()
 
     fun preLoad() {
-        Event.trigger(WorldPreLoadEvent(this)) {}
     }
 
     fun load() {
-        Event.trigger(WorldLoadEvent(this)) {}
     }
 
     fun postLoad() {
-        Event.trigger(WorldPostLoadEvent(this)) {}
     }
 
     fun pulse() {

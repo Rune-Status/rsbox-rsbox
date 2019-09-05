@@ -1,8 +1,6 @@
 package io.rsbox.engine.system.login
 
 import io.netty.channel.ChannelFutureListener
-import io.rsbox.api.event.Event
-import io.rsbox.api.event.impl.PlayerAuthEvent
 import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
@@ -70,23 +68,8 @@ class LoginWorker(private val loginQueue: LoginQueue) : Runnable {
 
             request.session.player = p
 
-            val event = Event.trigger(PlayerAuthEvent(p)) {
-                loginQueue.service.handleLoginSuccess(p)
-                LoginQueue.logger.info("Login request accepted for username {}. Handing off connection to game protocol.", username)
-            }
-
-            if(event.isCancelled()) {
-                val state: LoginState
-                val stateMap = LoginState.values().associate { it.id to it }
-                state = if(!stateMap.containsKey(event.loginStateId)) {
-                    LoginState.COULD_NOT_COMPLETE_LOGIN
-                } else {
-                    stateMap.getValue(event.loginStateId)
-                }
-                sendLoginState(request.session, state)
-                LoginQueue.logger.info("Login request rejected for username {} due to {}.", username, state)
-            }
-
+            loginQueue.service.handleLoginSuccess(p)
+            LoginQueue.logger.info("Login request accepted for username {}. Handing off connection to game protocol.", username)
             return
         }
 
