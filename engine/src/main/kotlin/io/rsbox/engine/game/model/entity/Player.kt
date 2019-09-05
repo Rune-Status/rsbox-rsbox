@@ -1,7 +1,5 @@
 package io.rsbox.engine.game.model.entity
 
-import io.rsbox.api.event.Event
-import io.rsbox.api.event.impl.PlayerLoadEvent
 import io.rsbox.engine.Engine
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.game.model.interf.InterfaceManager
@@ -78,8 +76,6 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
         write(RegionRebuildMessage(tile, engine.xteaKeyService, index, tiles))
 
         initiated = true
-
-        Event.trigger(PlayerLoadEvent(this)) {}
     }
 
     fun prePulse() {

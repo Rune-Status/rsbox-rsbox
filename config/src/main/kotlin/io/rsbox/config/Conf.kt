@@ -10,4 +10,6 @@ object Conf {
 
     lateinit var SERVER: Config
 
+    lateinit var MONGODB : Config
+
 }
