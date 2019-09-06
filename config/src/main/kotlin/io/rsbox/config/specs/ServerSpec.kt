@@ -21,4 +21,8 @@ object ServerSpec : ConfigSpec("server") {
     val game_login_threads by optional(3, "game.login_threads")
     val auto_create_accounts by optional(true, "game.auto_create_accounts")
     val game_pulse_interval by optional(600, "game.pulse_interval")
+
+    // Database Related
+    val data_yaml by optional(true, "data.yaml")
+    val data_mongodb by optional(false, "data.mongodb")
 }
