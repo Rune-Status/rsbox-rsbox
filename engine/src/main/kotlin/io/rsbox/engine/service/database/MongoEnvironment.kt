@@ -12,17 +12,24 @@ object MongoEnvironment : ConfigSpec("mongo") {
     val params by optional("", "params")
     val database by optional("default", "database")
 
+    /**
+     * Creates a MongoDB connection string from the environment settings.
+     */
     fun connectionString() : String {
-        if(Conf.MONGODB.get(password) != "none" && Conf.MONGODB.get(user) != "none") {
-            return "${Conf.MONGODB.get(protocol)}" +
-                    "${Conf.MONGODB.get(user)}:" +
-                    "${Conf.MONGODB.get(password)}@" +
-                    "${Conf.MONGODB.get(host)}/?" +
-                    "${Conf.MONGODB.get(params)}/"
+        return if(Conf.MONGODB[password] != "none" && Conf.MONGODB[user] != "none") {
+            """"
+                        ${Conf.MONGODB[protocol]}
+                        ${Conf.MONGODB[user]}:
+                        ${Conf.MONGODB[password]}@
+                        ${Conf.MONGODB[host]}/?
+                        ${Conf.MONGODB[params]}/
+                """.trimIndent()
         } else {
-            return "${Conf.MONGODB.get(protocol)}" +
-                    "${Conf.MONGODB.get(host)}/?" +
-                    "${Conf.MONGODB.get(params)}/"
+            """
+                    ${Conf.MONGODB[protocol]}
+                    ${Conf.MONGODB[host]}/?
+                    ${Conf.MONGODB[params]}/
+                """.trimIndent()
         }
     }
 }
