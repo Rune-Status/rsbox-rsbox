@@ -1,6 +1,6 @@
 plugins {}
 
-description = "RSBox Game Content"
+description = "RSBox Game content"
 
 dependencies {
     api project(':api')

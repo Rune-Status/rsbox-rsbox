@@ -1,17 +1,23 @@
-plugins {}
-
-description = "RSBox Kotlin Plugins"
-
 gradle.projectsEvaluated {
-    configure(subprojects.findAll { it.buildFile.exists() }) { pluginModule -> 
-        sourceSets {
-            main.kotlin.srcDirs = ['src/main/kotlin']
-        }
+    configure(subprojects.findAll { it.buildFile.exists() }) { pluginModule ->
 
-        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-            kotlinOptions {
-                jvmTarget = "1.8"
+        sourceSets {
+            main {
+                kotlin {
+                    srcDirs += "plugin"
+                }
             }
         }
+
+        dependencies {
+            implementation 'org.jetbrains.kotlin:kotlin-script-runtime:1.3.50'
+            implementation project(':plugin')
+        }
     }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-scripting-common:1.3.50'
+
+    runtimeOnly project(':plugin:content')
 }

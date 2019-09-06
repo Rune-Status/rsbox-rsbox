@@ -37,6 +37,4 @@ def loadPluginDir(Path dir) {
 }
 
 pluginDirs.each { loadPluginDir(it as Path) }
-include 'plugin:testplugin'
-findProject(':plugin:testplugin')?.name = 'testplugin'
 
