@@ -1,8 +1,8 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21' apply(false)
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50' apply(false)
 }
 
-allprojects {
+subprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'jacoco'
     
@@ -16,7 +16,7 @@ allprojects {
     }
 
     dependencies {
-        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.50'
 
         compile 'io.github.microutils:kotlin-logging:1.7.6'
         compile 'org.slf4j:slf4j-api:1.7.5'
@@ -27,8 +27,6 @@ allprojects {
         compile 'org.bouncycastle:bcprov-ext-jdk16:1.46'
         compile 'net.openhft:zero-allocation-hashing:0.9'
         compile 'io.github.classgraph:classgraph:4.8.47'
-        compile 'org.jetbrains.kotlin:kotlin-scripting-common:1.3.50'
-        compile 'org.jetbrains.kotlin:kotlin-script-runtime:1.3.50'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
         compile 'it.unimi.dsi:fastutil:8.1.0'
         compile 'com.google.code.gson:gson:2.8.5'
@@ -44,10 +42,10 @@ allprojects {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
     
     jacocoTestReport {
