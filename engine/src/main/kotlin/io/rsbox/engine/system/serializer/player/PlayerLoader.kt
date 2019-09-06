@@ -1,6 +1,7 @@
 package io.rsbox.engine.system.serializer.player
 
 import com.uchuhimo.konf.Config
+import com.uchuhimo.konf.source.yaml
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.PlayerSpec
 import io.rsbox.engine.game.model.Tile

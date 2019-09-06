@@ -2,6 +2,7 @@ package io.rsbox.engine.service.database
 
 import com.mongodb.async.client.MongoClient
 import com.uchuhimo.konf.Config
+import com.uchuhimo.konf.source.yaml
 import com.uchuhimo.konf.source.yaml.toYaml
 import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
