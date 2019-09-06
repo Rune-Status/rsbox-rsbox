@@ -18,11 +18,11 @@ object MongoEnvironment : ConfigSpec("mongo") {
     fun connectionString() : String {
         return if(Conf.MONGODB[password] != "none" && Conf.MONGODB[user] != "none") {
             """"
-                        ${Conf.MONGODB[protocol]}
-                        ${Conf.MONGODB[user]}:
-                        ${Conf.MONGODB[password]}@
-                        ${Conf.MONGODB[host]}/?
-                        ${Conf.MONGODB[params]}/
+                    ${Conf.MONGODB[protocol]}
+                    ${Conf.MONGODB[user]}:
+                    ${Conf.MONGODB[password]}@
+                    ${Conf.MONGODB[host]}/?
+                    ${Conf.MONGODB[params]}/
                 """.trimIndent()
         } else {
             """
@@ -33,3 +33,4 @@ object MongoEnvironment : ConfigSpec("mongo") {
         }
     }
 }
+
