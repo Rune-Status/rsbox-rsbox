@@ -7,6 +7,7 @@ package io.rsbox.config
 object PathConstants {
 
     const val CONFIG_SERVER_PATH = "rsbox/config/server.yml"
+    const val CONFIG_MONGO_PATH = "rsbox/config/mongo.yml"
     const val CACHE_PATH = "rsbox/data/cache/"
     const val XTEAS_FILE_PATH = "rsbox/data/xteas/xteas.json"
     const val RSA_PRIVATE_PATH = "rsbox/data/rsa/private.pem"
