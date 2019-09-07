@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 class Engine : io.rsbox.api.Engine {
 
-    override var revision = -1
+    override var revision by Conf.SERVER.delegate(ServerSpec.revision)
     var rsa: RSA = RSA()
     override lateinit var cacheStore: Store
     lateinit var networkServer: NetworkServer
@@ -31,9 +31,6 @@ class Engine : io.rsbox.api.Engine {
     lateinit var xteaKeyService: XteaKeyService
 
     private fun init() {
-        // Load server revision via server.yml
-        revision = Conf.SERVER[ServerSpec.revision]
-
         world = World(this)
 
         // Update API hooks

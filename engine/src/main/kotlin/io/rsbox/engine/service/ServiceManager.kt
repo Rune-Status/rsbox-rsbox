@@ -2,13 +2,10 @@ package io.rsbox.engine.service
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.game.model.World
-import io.rsbox.engine.service.database.MongoDBService
 import io.rsbox.engine.service.game.GameService
 import io.rsbox.engine.service.login.LoginService
 import io.rsbox.engine.service.xtea.XteaKeyService
 import mu.KLogging
-import java.lang.Exception
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author Kyle Escobar
@@ -25,13 +22,6 @@ object ServiceManager : KLogging() {
         load(GameService::class.java, GameService(world))
         load(LoginService::class.java, LoginService())
         load(XteaKeyService::class.java, XteaKeyService(world.engine))
-
-        /**
-         * Only Load Mongo if enabled in the server.yml config.
-         */
-        if(Conf.SERVER[ServerSpec.data_mongodb]) {
-            load(MongoDBService::class.java, MongoDBService())
-        }
     }
 
     private fun <T : Service> load(serviceClass: Class<out T>, service: T) {

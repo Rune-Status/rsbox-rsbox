@@ -28,7 +28,7 @@ class JS5Codec : MessageToMessageCodec<ByteBuf, JS5Response>() {
     }
 
     override fun decode(ctx: ChannelHandlerContext, msg: ByteBuf, out: MutableList<Any>) {
-        if(!msg.isReadable) return
+        if(!msg.isReadable) return // Not stateful
 
         msg.markReaderIndex()
         val opcode = msg.readByte().toInt()

@@ -1,40 +1,9 @@
-import java.nio.file.Paths
-import java.nio.file.Path
-
 rootProject.name = 'rsbox'
 
 include ':server'
 include ':engine'
 include ':game'
-include ':plugin'
 include ':api'
 include ':util'
 include ':config'
-
-def pluginDirs = [
-        rootProject.projectDir.toPath().resolve("plugin/")
-]
-
-def loadPluginDir(Path dir) {
-    if (dir.toFile().exists()) {
-        def finder = new FileNameFinder()
-        def files = finder.getFileNames(dir.toString(), "**/*.gradle")
-
-        files.each { filename ->
-            def path = Paths.get(filename)
-            def parentPath = path.parent
-
-            if (parentPath == dir) {
-                return
-            }
-
-            def relativePath = dir.relativize(parentPath)
-            def pluginName = relativePath.toString().replace(File.separator, ":")
-
-            include ":plugin:$pluginName"
-        }
-    }
-}
-
-pluginDirs.each { loadPluginDir(it as Path) }
 
