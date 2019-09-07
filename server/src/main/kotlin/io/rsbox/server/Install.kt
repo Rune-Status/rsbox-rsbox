@@ -34,6 +34,11 @@ object Install : KLogging() {
         "rsbox/logs/"
     )
 
+    @JvmStatic
+    fun main(args: Array<String>) {
+        run(forceInstall = true)
+    }
+
     fun run(forceInstall: Boolean = false) {
         if(!checkSetup() || forceInstall) {
 

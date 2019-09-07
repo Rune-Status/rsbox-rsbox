@@ -23,9 +23,16 @@ class Server {
 
         logger.info { "Server installation check passed." }
 
+        this.loadUpdater()
+
         this.loadEngine()
 
         logger.info { "Server startup has completed." }
+    }
+
+    private fun loadUpdater() {
+        logger.info { "Checking for Updates." }
+        Updater.check()
     }
 
     private fun loadEngine() {
