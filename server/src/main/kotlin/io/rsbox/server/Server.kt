@@ -2,8 +2,8 @@ package io.rsbox.server
 
 import com.google.common.base.Stopwatch
 import com.uchuhimo.konf.Config
-import com.uchuhimo.konf.source.json.toJson
 import com.uchuhimo.konf.source.yaml
+import com.uchuhimo.konf.source.yaml.toYaml
 import io.rsbox.config.Conf
 import io.rsbox.config.PathConstants
 import io.rsbox.config.specs.ServerSpec
@@ -41,7 +41,7 @@ class Server {
     private fun loadConfigs() {
         val stopwatch = Stopwatch.createStarted()
         Conf.SERVER = Config { addSpec(ServerSpec) }.from.yaml.file(PathConstants.CONFIG_SERVER_PATH)
-        Conf.SERVER.toJson.toFile(PathConstants.CONFIG_SERVER_PATH)
+        Conf.SERVER.toYaml.toFile(PathConstants.CONFIG_SERVER_PATH)
 
         logger.info("Loaded configuration {}.", PathConstants.CONFIG_SERVER_PATH)
         stopwatch.stop()
