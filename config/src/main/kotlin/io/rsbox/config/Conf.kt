@@ -1,6 +1,7 @@
 package io.rsbox.config
 
-import com.uchuhimo.konf.Config
+import io.rsbox.config.specs.ServerSpec
+import java.io.File
 
 /**
  * @author Kyle Escobar
@@ -8,8 +9,6 @@ import com.uchuhimo.konf.Config
 
 object Conf {
 
-    lateinit var SERVER: Config
-
-    lateinit var MONGODB : Config
+    val SERVER = Serializer(File(PathConstants.CONFIG_SERVER_PATH), ConfigDataType.YAML, ServerSpec).load()
 
 }
