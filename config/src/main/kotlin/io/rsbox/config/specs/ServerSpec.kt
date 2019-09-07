@@ -10,6 +10,8 @@ object ServerSpec : ConfigSpec("server") {
 
     val name by optional("RSBox Server", "name")
     val revision by optional(182, "revision")
+    val automatic_update by optional(true, "automatic_update")
+    val prompt_update by optional(true, "prompt_update")
 
     // Network Related
     val network_address by optional("0.0.0.0", "network.address")
