@@ -2,15 +2,12 @@ package io.rsbox.engine.net.game
 
 import io.rsbox.engine.net.Session
 import io.rsbox.engine.net.game.exception.IllegalOpcodeException
-import io.rsbox.engine.net.game.impl.decoder.IgnoredDecoder
+import io.rsbox.engine.net.game.impl.decoder.*
 import io.rsbox.engine.net.game.impl.encoder.IfOpenGameScreenEncoder
 import io.rsbox.engine.net.game.impl.encoder.IfOpenInterfaceEncoder
 import io.rsbox.engine.net.game.impl.encoder.RegionRebuildEncoder
-import io.rsbox.engine.net.game.impl.handler.IgnoredHandler
-import io.rsbox.engine.net.game.impl.message.IfOpenGameScreenMessage
-import io.rsbox.engine.net.game.impl.message.IfOpenInterfaceMessage
-import io.rsbox.engine.net.game.impl.message.IgnoredMessage
-import io.rsbox.engine.net.game.impl.message.RegionRebuildMessage
+import io.rsbox.engine.net.game.impl.handler.*
+import io.rsbox.engine.net.game.impl.message.*
 import io.rsbox.engine.net.game.packet.*
 import mu.KLogging
 
@@ -30,6 +27,10 @@ object RSProtocol : KLogging() {
 
         // Inbound Packets
         inbound(255, IgnoredMessage::class.java, IgnoredDecoder(), IgnoredHandler())
+        inbound(22, NoTimeoutMessage::class.java, NoTimeoutDecoder(), NoTimeoutHandler())
+        inbound(76, MapBuildCompleteMessage::class.java, MapBuildCompleteDecoder(), MapBuildCompleteHandler())
+        inbound(35, WindowStatusMessage::class.java, WindowStatusDecoder(), WindowStatusHandler())
+        inbound(4, IgnoredMessage::class.java, IgnoredDecoder(), IgnoredHandler())
     }
 
 
