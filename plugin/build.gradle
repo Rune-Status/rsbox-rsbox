@@ -1,0 +1,17 @@
+gradle.projectsEvaluated {
+    configure(subprojects.findAll { it.buildFile.exists() }) { project -> 
+        sourceSets {
+            main {
+                kotlin {
+                    srcDirs += "plugin"
+                }
+            }
+            
+            test {
+                kotlin {
+                    srcDirs += "test"
+                }
+            }
+        }
+    }
+}
