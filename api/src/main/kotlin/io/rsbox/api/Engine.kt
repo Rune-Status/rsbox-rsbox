@@ -1,5 +1,6 @@
 package io.rsbox.api
 
+import io.rsbox.api.plugin.PluginManager
 import net.runelite.cache.fs.Store
 
 /**
@@ -29,4 +30,8 @@ interface Engine {
      */
     fun stop()
 
+    /**
+     * Gets the loaded plugin manager.
+     */
+    val pluginManager: PluginManager
 }

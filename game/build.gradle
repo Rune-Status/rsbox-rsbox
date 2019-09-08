@@ -1,7 +1,0 @@
-plugins {}
-
-description = "RSBox Game content"
-
-dependencies {
-    api project(':api')
-}
