@@ -3,9 +3,7 @@ description = "RSBox Plugin API"
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-scripting-common:1.3.50'
     
-    runtimeClasspath project(':api:plugins')
-    
-    project(':api:plugins').subprojects { plugin -> 
+    project(':plugin').subprojects { plugin -> 
         if(plugin.buildFile.exists()) {
             runtimeClasspath plugin
         }

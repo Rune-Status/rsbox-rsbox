@@ -7,34 +7,35 @@ rootProject.name = 'rsbox'
 include ':server'
 include ':engine'
 include ':api'
-include ':api:plugins'
 include ':util'
 include ':config'
+include ':plugin'
 
-def pluginsDir = [rootProject.projectDir.toPath().resolve("api/plugins")]
+/*
+ * Credits to Tomm0017, and Apollo
+ */
 
-def includePlugin(Path pluginPath) {
+def pluginDir = [rootProject.projectDir.toPath().resolve("plugin")]
+
+def includePluginProject(Path pluginPath) {
     assert Files.exists(pluginPath)
 
     def fileFinder = new FileNameFinder()
     def files = fileFinder.getFileNames(pluginPath.toString(), "**/*.gradle")
 
-    files.each { name ->
-        def filePath = Paths.get(name)
-        def parent = filePath.parent
-
-        if (parent == pluginPath) {
-            return
-        }
-
+    files.each { name -> 
+        def path = Paths.get(name)
+        def parent = path.parent
+        
+        if(parent == pluginPath) return
+        
         def relativePath = pluginPath.relativize(parent)
         def pluginName = relativePath.toString().replace(File.separator, ":")
-
-        include ":api:plugins:$pluginName"
+        
+        include ":plugin:$pluginName"
     }
 }
 
-pluginsDir.each {
-    includePlugin(it)
+pluginDir.each {
+    includePluginProject(it)
 }
-

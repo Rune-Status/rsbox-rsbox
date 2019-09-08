@@ -1,5 +1,8 @@
 package io.rsbox.api.plugin
 
+import io.rsbox.api.Engine
+import io.rsbox.api.RSBox
+import io.rsbox.api.World
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -8,10 +11,10 @@ import kotlin.script.experimental.annotations.KotlinScript
 
 @KotlinScript(
     displayName = "RSBox Plugin Script",
-    fileExtension = "rs.kts"
+    fileExtension = "rs.kts",
+    compilationConfiguration = RSPluginConfiguration::class
 )
 abstract class RSPlugin {
-
-    fun helloWorld() = println("This is a test.")
-
+    val engine: Engine get() = RSBox.engine
+    val world: World get() = RSBox.world
 }

@@ -9,6 +9,7 @@ import io.rsbox.engine.game.model.World
 import io.rsbox.engine.net.NetworkServer
 import io.rsbox.engine.service.ServiceManager
 import io.rsbox.engine.service.xtea.XteaKeyService
+import io.rsbox.engine.system.plugin.PluginManager
 import io.rsbox.engine.system.rsa.RSA
 import mu.KLogging
 import net.runelite.cache.fs.Store
@@ -29,6 +30,8 @@ class Engine : io.rsbox.api.Engine {
     lateinit var world: World
 
     lateinit var xteaKeyService: XteaKeyService
+
+    override val pluginManager = PluginManager(this)
 
     private fun init() {
         world = World(this)
@@ -63,6 +66,8 @@ class Engine : io.rsbox.api.Engine {
 
     private fun post() {
         world.postLoad()
+
+        this.pluginManager.loadPlugins()
     }
 
     override fun stop() {
