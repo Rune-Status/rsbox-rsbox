@@ -13,10 +13,6 @@ gradle.projectsEvaluated {
                 }
             }
         }
-        
-        dependencies {
-            implementation project(':api')
-        }
     }
 }
 
