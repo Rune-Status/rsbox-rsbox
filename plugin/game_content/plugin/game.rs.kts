@@ -1,9 +1,5 @@
-import io.rsbox.api.event.impl.PlayerAuthEvent
+import io.rsbox.api.event.impl.PlayerLoadEvent
 
-on_event<PlayerAuthEvent> {
-    val player = it.player
-    if(player.username == "kyle") {
-        it.cancel()
-        it.loginStateResponse = LoginStateResponse.ACCOUNT_BANNED
-    }
-}
+val game = Game()
+
+on_event<PlayerLoadEvent> { game.initPlayerGameScreen(it.player) }
