@@ -7,5 +7,4 @@ package io.rsbox.api
 interface World {
 
     val engine: Engine get() = RSBox.engine
-
 }
