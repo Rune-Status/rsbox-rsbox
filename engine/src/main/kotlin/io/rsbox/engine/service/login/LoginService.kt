@@ -42,25 +42,30 @@ class LoginService : Service {
          */
         EventManager.trigger(
             event = PlayerAuthEvent(player),
-            logic = {
-                player.register()
+            logic = { loginContinue(player) },
+            cancelLogic = { loginCancel(player, it) }
+        )
+    }
 
-                val response = LoginResponse(index = player.index, privilege = player.privilege)
-                player.session.ctx.writeAndFlush(response)
+    private fun loginContinue(player: Player) {
+        player.register()
 
-                val p = player.session.ctx.pipeline()
-                p.remove("login_codec")
-                p.addBefore("handler", "packet_encoder", GamePacketEncoder(player.session.encodeRandom))
-                p.addAfter("packet_encoder", "packet_decoder", GamePacketDecoder(player.session.decodeRandom))
+        val response = LoginResponse(index = player.index, privilege = player.privilege)
+        player.session.ctx.writeAndFlush(response)
 
-                player.login()
-            },
-            cancelLogic = {
-                val responses = LoginState.values().associate { it.id to it }
-                val response = responses[it.loginStateResponse.id] ?: throw IllegalArgumentException("Login state id ${it.loginStateResponse.id} is invalid.")
-                player.session.ctx.writeAndFlush(player.session.ctx.alloc().buffer(1).writeByte(response.id))
-                    .addListener(ChannelFutureListener.CLOSE)
-            })
+        val p = player.session.ctx.pipeline()
+        p.remove("login_codec")
+        p.addBefore("handler", "packet_encoder", GamePacketEncoder(player.session.encodeRandom))
+        p.addAfter("packet_encoder", "packet_decoder", GamePacketDecoder(player.session.decodeRandom))
+
+        player.login()
+    }
+
+    private fun loginCancel(player: Player, event: PlayerAuthEvent) {
+        val responses = LoginState.values().associate { it.id to it }
+        val response = responses[event.loginStateResponse.id] ?: throw IllegalArgumentException("Login state id ${event.loginStateResponse.id} is invalid.")
+        player.session.ctx.writeAndFlush(player.session.ctx.alloc().buffer(1).writeByte(response.id))
+            .addListener(ChannelFutureListener.CLOSE)
     }
 
     companion object : KLogging()
