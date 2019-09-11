@@ -32,14 +32,16 @@ class PluginManager(private val engine: Engine) : io.rsbox.api.plugin.PluginMana
     }
 
     private fun scanPackagedPlugins() {
-        ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
-            val pluginClassList = result
-                .getSubclasses(RSPlugin::class.java.name)
-                .directOnly()
+        ClassGraph().enableAllInfo().scan().use { result ->
+            val pluginClassList = result.getSubclasses(RSPlugin::class.java.name).directOnly()
+            pluginClassList.forEach { classInfo ->
+                val scriptClass = classInfo.loadClass(RSPlugin::class.java)
+                val scriptConstructor = scriptClass.getConstructor()
 
-            pluginClassList.forEach {
-                val inst = it.loadClass(RSPlugin::class.java).getDeclaredConstructor().newInstance()
-                this.register(inst)
+                val instance = scriptConstructor.newInstance()
+
+                plugins.add(instance)
+                logger.info { "Loaded plugin ${scriptClass.simpleName}." }
             }
         }
     }

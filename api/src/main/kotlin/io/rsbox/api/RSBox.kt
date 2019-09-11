@@ -1,5 +1,7 @@
 package io.rsbox.api
 
+import kotlinx.coroutines.CoroutineDispatcher
+
 /**
  * The static object class holding references to parts of the game
  * engine to be called within the API.
