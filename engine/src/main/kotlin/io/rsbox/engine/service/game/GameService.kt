@@ -1,13 +1,13 @@
 package io.rsbox.engine.service.game
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
-import io.rsbox.api.RSBox
 import io.rsbox.config.Conf
 import io.rsbox.config.specs.ServerSpec
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.service.Service
 import io.rsbox.engine.task.GameTask
-import io.rsbox.engine.task.impl.PlayerPulseTask
+import io.rsbox.engine.task.impl.PlayerCycleTask
+import io.rsbox.engine.task.impl.PlayerSyncTask
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import mu.KLogging
@@ -69,7 +69,8 @@ class GameService(private val world: World) : Service {
                 .build())
 
         tasks.addAll(arrayOf(
-            PlayerPulseTask(taskExecutor, world)
+            PlayerCycleTask(taskExecutor, world),
+            PlayerSyncTask(taskExecutor)
         ))
 
         logger.info("{} tasks will be processed every {}ms on {} threads.", tasks.size, pulseInterval, maxThreads)

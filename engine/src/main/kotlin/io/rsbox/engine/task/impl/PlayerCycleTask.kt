@@ -10,7 +10,7 @@ import java.util.concurrent.Phaser
  * @author Kyle Escobar
  */
 
-class PlayerPulseTask(private val executor: ExecutorService, private val world: World) : GameTask {
+class PlayerCycleTask(private val executor: ExecutorService, private val world: World) : GameTask {
 
     private val phaser = Phaser(1)
 
