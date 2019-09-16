@@ -22,7 +22,7 @@ class PluginManager(private val engine: Engine) : io.rsbox.api.plugin.PluginMana
         this.plugins.remove(plugin)
     }
 
-    override val loadedPlugins: Array<RSPlugin> = plugins.toTypedArray()
+    override val loadedPlugins: Array<RSPlugin> get() = plugins.toTypedArray()
 
     internal fun loadPlugins() {
         this.scanPackagedPlugins()

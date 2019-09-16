@@ -3,7 +3,9 @@ package io.rsbox.engine.game.model.entity
 import io.rsbox.api.event.EventManager
 import io.rsbox.api.event.impl.PlayerLoadEvent
 import io.rsbox.engine.Engine
+import io.rsbox.engine.game.model.Appearance
 import io.rsbox.engine.game.model.World
+import io.rsbox.engine.game.model.block.PlayerBlockType
 import io.rsbox.engine.game.model.interf.InterfaceManager
 import io.rsbox.engine.net.Session
 import io.rsbox.engine.net.game.Message
@@ -46,7 +48,11 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
     var gpiExternalCount = 0
 
+    val gpiInactivityFlags = IntArray(2048)
+
     val gpiTileHashMultipliers = IntArray(2048)
+
+    val isOnline: Boolean get() = index > 0
 
     /**
      * The interface manager.
@@ -56,6 +62,8 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
     override fun _interfaces(): io.rsbox.api.interf.InterfaceManager {
         return interfaces
     }
+
+    var appearance: Appearance = Appearance.DEFAULT
 
 
     fun register() {
@@ -79,11 +87,24 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
         initiated = true
 
+        this.addBlock(PlayerBlockType.APPEARANCE)
+
         /**
          * Trigger PlayerLoadEvent.
          */
         EventManager.trigger(PlayerLoadEvent(this), {})
     }
+
+    fun addBlock(block: PlayerBlockType) {
+        val bit = block.bit
+        blockState.addBit(bit)
+    }
+
+    fun hasBlock(block: PlayerBlockType): Boolean {
+        val bit = block.bit
+        return blockState.hasBit(bit)
+    }
+
 
     fun prePulse() {
 
@@ -111,5 +132,13 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
     fun close() {
         session.close()
+    }
+
+    companion object {
+
+        const val NORMAL_RENDER_DISTANCE = 15
+
+        const val LARGE_RENDER_DISTANCE = 127
+
     }
 }

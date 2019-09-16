@@ -1,5 +1,7 @@
 package io.rsbox.engine.game.model
 
+import io.rsbox.api.Direction
+
 /**
  * Credits to tomm for his Tile class.
  * Minor modifications for RSbox use.
@@ -28,4 +30,19 @@ class Tile : io.rsbox.api.Tile {
     constructor(x: Int, z: Int, height: Int = 0) : this((x and 0x7FFF) or ((z and 0x7FFF) shl 15) or (height shl 30))
 
     constructor(other: Tile) : this(other.x, other.z, other.height)
+
+    fun isWithinRadius(otherX: Int, otherZ: Int, otherHeight: Int, radius: Int): Boolean {
+        if(otherHeight != height) {
+            return false
+        }
+
+        val dx = Math.abs(x - otherX)
+        val dz = Math.abs(z - otherZ)
+        return dx <= radius && dz <= radius
+    }
+
+    fun isWithinRadius(other: Tile, radius: Int): Boolean = isWithinRadius(other.x, other.z, other.height, radius)
+
+    fun step(direction: Direction, num: Int = 1): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
+
 }
