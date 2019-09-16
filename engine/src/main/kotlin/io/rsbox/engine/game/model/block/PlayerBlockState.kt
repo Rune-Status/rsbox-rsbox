@@ -8,7 +8,7 @@ class PlayerBlockState {
 
     private var mask = 0
 
-    private var teleport = false
+    var teleport = false
 
     var faceDegrees = 0
     var faceLivingEntityIndex = -1

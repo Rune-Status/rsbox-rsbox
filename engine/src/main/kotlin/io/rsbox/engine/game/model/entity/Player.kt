@@ -3,6 +3,7 @@ package io.rsbox.engine.game.model.entity
 import io.rsbox.api.event.EventManager
 import io.rsbox.api.event.impl.PlayerLoadEvent
 import io.rsbox.engine.Engine
+import io.rsbox.engine.game.model.Appearance
 import io.rsbox.engine.game.model.World
 import io.rsbox.engine.game.model.block.PlayerBlockType
 import io.rsbox.engine.game.model.interf.InterfaceManager
@@ -62,6 +63,8 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
         return interfaces
     }
 
+    var appearance: Appearance = Appearance.DEFAULT
+
 
     fun register() {
         world.register(this)
@@ -84,7 +87,7 @@ class Player(override val engine: Engine, override val world: World) : LivingEnt
 
         initiated = true
 
-        //this.addBlock(PlayerBlockType.APPEARANCE)
+        this.addBlock(PlayerBlockType.APPEARANCE)
 
         /**
          * Trigger PlayerLoadEvent.
