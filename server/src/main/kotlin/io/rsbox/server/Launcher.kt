@@ -1,21 +1,26 @@
 package io.rsbox.server
 
 /**
- * This object is used to launch and handle arguments for RSServer
- *
  * @author Kyle Escobar
  */
+
 object Launcher {
 
-    /**
-     * RSServer static reference. Can be called from any class.
-     */
     lateinit var server: Server
-
+    
     @JvmStatic
     fun main(args: Array<String>) {
-        server = Server()
-        server.init()
+        if(args.isNotEmpty()) {
+            if(args.size == 1 && args[0] == "--install") {
+                Install.run()
+            }
+            else if(args.size == 2 && args[0] == "--install" && args[1] == "--force") {
+                Install.run(true)
+            }
+        } else {
+            server = Server()
+            server.start()
+        }
     }
 
 }

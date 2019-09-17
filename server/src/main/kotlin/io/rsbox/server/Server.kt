@@ -1,170 +1,45 @@
 package io.rsbox.server
 
-import com.google.common.base.Stopwatch
-import com.uchuhimo.konf.Config
-import com.uchuhimo.konf.ConfigSpec
-import com.uchuhimo.konf.source.yaml
-import com.uchuhimo.konf.source.yaml.toYaml
-import io.rsbox.server.config.Conf
-import io.rsbox.server.config.spec.ServerSpec
-import io.rsbox.server.net.GameServer
-import io.rsbox.server.system.security.rsa.RSA
+import io.rsbox.engine.Engine
 import mu.KLogging
-import net.runelite.cache.fs.Store
-import java.io.File
-import java.net.InetSocketAddress
-import java.util.concurrent.TimeUnit
+
 
 /**
  * @author Kyle Escobar
  */
 
-/**
- * This is the object which is the base of starting the server. It is called from the launcher on execution.
- */
 class Server {
 
-    lateinit var gameServer: GameServer
+    private lateinit var engine: Engine
 
-    private lateinit var stopwatch: Stopwatch
-
-    /**
-     * Initializes anything needed before starting the server.
-     */
-    fun init() {
-        stopwatch = Stopwatch.createStarted()
-
-        logger.info { "Initializing Server..." }
-
-        this.setupDirs()
-
-        this.setupConfigs()
-
-        this.loadCache()
-
-        this.run()
-    }
-
-    /**
-     * Runs everything in order to start the server.
-     */
-    fun run() {
-        this.start()
-        this.bind()
-        stopwatch.stop()
-
-        logger.info("${Conf.SERVER[ServerSpec.name]} startup took {}s.", stopwatch.elapsed(TimeUnit.SECONDS))
-    }
-
-    /**
-     * Starts the game engine.
-     */
     fun start() {
-        logger.info { "Starting server..." }
+        logger.info { "Server is starting up..." }
 
-        /**
-         * Load the server's revision from server.yml.
-         */
-        REVISION = Conf.SERVER[ServerSpec.revision]
-
-        /**
-         * Load / generate the RSA key pairs.
-         */
-        RSA.load()
-    }
-
-    /**
-     * Signals a server shutdown.
-     */
-    fun shutdown() {
-
-    }
-
-    /**
-     * Started the networking required for the server.
-     */
-    fun bind() {
-        logger.info("Starting server network.")
-
-        val address = Conf.SERVER[ServerSpec.network_address]
-        val port = Conf.SERVER[ServerSpec.network_port]
-
-        gameServer = GameServer(this)
-        gameServer.bind(InetSocketAddress(address, port))
-    }
-
-    private fun setupDirs() {
-        logger.info { "Scanning server directories." }
-
-        val dirs = arrayOf(
-            "rsbox/",
-            "rsbox/config/",
-            "rsbox/data/",
-            "rsbox/plugins/",
-            "rsbox/data/cache/",
-            "rsbox/data/xteas/",
-            "rsbox/data/rsa/",
-            "rsbox/data/def/",
-            "rsbox/data/save/",
-            "rsbox/logs/"
-        )
-
-        dirs.forEach { dir ->
-            val file = File(dir)
-            if(!file.exists()) {
-                file.mkdirs()
-                logger.info("Created default directory {}.", dir)
-            }
-        }
-    }
-
-    private fun setupConfigs() {
-        Conf.SERVER = loadConfig(File("rsbox/config/server.yml"), ServerSpec)
-    }
-
-    private fun loadConfig(file: File, spec: ConfigSpec): Config {
-        if(!file.exists()) {
-            Config { addSpec(spec) }.toYaml.toFile(file)
-            logger.info("Created default configuration file {}.", file.path)
-        }
-        val config = Config { addSpec(spec) }.from.yaml.file(file)
-        config.toYaml.toFile(file)
-
-        logger.info("Loaded configuration file {}.", file.path)
-        return config
-    }
-
-    private fun loadCache() {
-        val stopwatch = Stopwatch.createStarted()
-        /**
-         * Check to make sure xteas.json exists before loading cache.
-         */
-        val xteasFile = File("rsbox/data/xteas/xteas.json")
-        if(!xteasFile.exists()) {
-            logger.error { "Unable to locate rsbox/data/xteas/xteas.json file. Make sure this file is present." }
+        // Check if installed
+        if(!Install.checkSetup()) {
+            logger.error { "RSBox has not been installed yet. Please run the [server:install] gradle task or add --install CLI flag before starting the server." }
             System.exit(-1)
         }
 
-        val cacheFolder = File("rsbox/data/cache/")
-        cacheStore = Store(cacheFolder)
-        cacheStore.load()
+        logger.info { "Server installation check passed." }
 
-        /**
-         * Check to make sure there is actually a loaded cache store.
-         * The check below simply sees if there are any loaded indices.
-         */
-        if(cacheStore.indexes.size == 0) {
-            logger.error("Unable to load cache from rsbox/data/cache/. Make sure your desired cache is present.")
-            System.exit(-1)
-        }
-        stopwatch.stop()
+        this.loadUpdater()
 
-        logger.info("Loaded game cache store in {}ms.", stopwatch.elapsed(TimeUnit.MILLISECONDS))
+        this.loadEngine()
+
+        logger.info { "Server startup has completed." }
     }
 
-    companion object : KLogging() {
-        var REVISION: Int = -1
-
-        lateinit var cacheStore: Store
+    private fun loadUpdater() {
+        logger.info { "Checking for Updates." }
+        Updater.check()
     }
+
+    private fun loadEngine() {
+        logger.info { "Starting game engine." }
+        engine = Engine()
+        engine.start()
+    }
+
+    companion object : KLogging()
 }
